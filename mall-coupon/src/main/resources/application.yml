@@ -1,18 +1,26 @@
 spring:
-  datasource:
-    username: root
-    password: 123456
-    url: jdbc:mysql://localhost:3306/jmall_sms
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  cloud:
-    nacos:
-      server-addr: 127.0.0.1:8848
   application:
     name: java-mall-coupon
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 82.157.130.123:8848
+      config:
+        server-addr: 82.157.130.123:8848
+        group: DEFAULT_GROUP
+        namespace: 87d9a131-4d65-49ae-91b2-c7951677b737
+  config:
+    import:
+      - optional:nacos:test.yml?refreshEnabled=false
+      - optional:nacos:database.yml?refreshEnabled=true
+
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   global-config:
     db-config:
       id-type: auto
 server:
-  port: 7000
+  port: 20001
+logging:
+  level:
+    org.epha.mall: debug

@@ -1,18 +1,25 @@
 spring:
-  datasource:
-    username: root
-    password: 123456
-    url: jdbc:mysql://localhost:3306/jmall_oms
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  cloud:
-    nacos:
-      server-addr: 127.0.0.1:8848
   application:
     name: java-mall-order
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 82.157.130.123:8848
+      config:
+        server-addr: 82.157.130.123:8848
+        group: DEFAULT_GROUP
+        namespace: 29ec7dca-205e-4933-bee3-884038de2fef
+  config:
+    import:
+      - optional:nacos:test.yml?refreshEnabled=false
+      - optional:nacos:database.yml?refreshEnabled=true
+
+
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   global-config:
     db-config:
       id-type: auto
+
 server:
-  port: 9000
+  port: 20003

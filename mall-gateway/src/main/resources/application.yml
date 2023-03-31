@@ -1,0 +1,70 @@
+spring:
+  application:
+    name: java-mall-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 82.157.130.123:8848
+      config:
+        server-addr: 82.157.130.123:8848
+        group: DEFAULT_GROUP
+        namespace: eeffa5dc-b8d7-4c93-a31d-19265caf049f
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        # coupon服务
+        - id: coupon_router
+          uri: lb://java-mall-coupon
+          predicates:
+            - Path=/api/coupon/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+        # product服务
+        - id: product_router
+          uri: lb://java-mall-product
+          predicates:
+            - Path=/api/product/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+        # member服务
+        - id: member_router
+          uri: lb://java-mall-member
+          predicates:
+            - Path=/api/member/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+        # order服务
+        - id: order_router
+          uri: lb://java-mall-order
+          predicates:
+            - Path=/api/order/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+        # ware服务
+        - id: ware_router
+          uri: lb://java-mall-ware
+          predicates:
+            - Path=/api/ware/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+        # 第三方服务
+        - id: third_party_route
+          uri: lb://mall-third-party
+          predicates:
+            - Path=/api/thirdparty/**
+          filters:
+            - RewritePath=/api/thirdparty/(?<segment>.*),/$\{segment}
+  config:
+    import:
+      - optional:nacos:test.yml?refreshEnabled=false
+#logging:
+#  level:
+#    org.springframework.cloud.gateway: DEBUG
+#    reactor.netty.http.client: DEBUG
+
+
+
+

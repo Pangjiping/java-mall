@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: mall-third-party
+  cloud:
+    nacos:
+      # nacos服务发现，默认都在public namespace下
+      discovery:
+        server-addr: 82.157.130.123:8848
+      # nacos自动配置，每个服务有自己的namespace
+      config:
+        server-addr: 82.157.130.123:8848
+        group: DEFAULT_GROUP
+        namespace: 6cdda117-c0b7-4bd7-b829-1bee093859bb
+  config:
+    import:
+      - optional:nacos:test.yml?refreshEnabled=true
+      - optional:nacos:oss.yml?refreshEnabled=true
+
+server:
+  port: 30000

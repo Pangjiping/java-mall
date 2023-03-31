@@ -16,8 +16,9 @@
         <module>mall-coupon</module>
         <module>mall-ware</module>
         <module>mall-product</module>
-        <module>renren-fast</module>
-        <module>renren-generator</module>
+        <module>mall-gateway</module>
+        <module>mall-third-party</module>
+        <module>mall-elasticsearch</module>
         <module>common</module>
     </modules>
 

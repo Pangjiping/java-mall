@@ -1,19 +1,14 @@
 package org.epha.mall.product.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import org.epha.mall.product.entity.AttrEntity;
-import org.epha.mall.product.service.AttrService;
 import org.epha.common.utils.PageUtils;
 import org.epha.common.utils.R;
+import org.epha.mall.product.entity.AttrEntity;
+import org.epha.mall.product.service.AttrService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.Map;
 
 
 
@@ -29,6 +24,13 @@ import org.epha.common.utils.R;
 public class AttrController {
     @Autowired
     private AttrService attrService;
+
+    @GetMapping("/base/list/{catelogId}")
+    public R baseAttrList(@RequestParam Map<String,Object> params,
+                          @PathVariable("catelogId") Long catelogId){
+        PageUtils page = attrService.queryBaseAttrPage(params,catelogId);
+        return R.ok();
+    }
 
     /**
      * 列表

@@ -1,8 +1,8 @@
 package org.epha.mall.product.dao;
 
-import org.epha.mall.product.entity.SpuInfoDescEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.epha.mall.product.entity.SpuInfoDescEntity;
 
 /**
  * spu信息介绍

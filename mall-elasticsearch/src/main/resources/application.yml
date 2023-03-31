@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: java-mall-elasticsearch
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 82.157.130.123:8848
+      config:
+        server-addr: 82.157.130.123:8848
+        group: DEFAULT_GROUP
+        namespace: 9a5a99a5-b7b1-45dc-8ba5-d9b3518cadd5
+  config:
+    import:
+      - optional:nacos:test.yml?refreshEnabled=false
+
+server:
+  port: 30001
+logging:
+  level:
+    org.epha.mall: debug
+
+elasticsearch:
+  connection:
+    host: localhost
+    port: 9200
+    protocol: http
+  auth:
+    username: elastic
+    password: V+H8B-qkCg1cv2QRL=1F
