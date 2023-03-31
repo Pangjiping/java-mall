@@ -1,14 +1,12 @@
 package org.epha.mall.ware.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import org.epha.mall.ware.vo.SkuHasStockVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import org.epha.mall.ware.entity.WareSkuEntity;
 import org.epha.mall.ware.service.WareSkuService;
@@ -29,6 +27,16 @@ import org.epha.common.utils.R;
 public class WareSkuController {
     @Autowired
     private WareSkuService wareSkuService;
+
+    /**
+     * 批量查询sku是否有库存
+     */
+    @PostMapping("/hasstock")
+    public R getSkusHasStock(@RequestBody List<Long> skuIds){
+        List<SkuHasStockVo> skuHasStockVos = wareSkuService.getSkusHasStock(skuIds);
+
+        return R.ok().setDate(skuHasStockVos);
+    }
 
     /**
      * 列表

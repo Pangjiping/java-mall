@@ -10,6 +10,7 @@ import org.epha.mall.product.entity.ProductAttrValueEntity;
 import org.epha.mall.product.service.ProductAttrValueService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -24,6 +25,15 @@ public class ProductAttrValueServiceImpl extends ServiceImpl<ProductAttrValueDao
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public List<ProductAttrValueEntity> baseAttrListforspu(Long spuId) {
+
+        List<ProductAttrValueEntity> attrValueEntityList = this.baseMapper.selectList(
+                new QueryWrapper<ProductAttrValueEntity>().eq("spu_id", spuId));
+
+        return attrValueEntityList;
     }
 
 }

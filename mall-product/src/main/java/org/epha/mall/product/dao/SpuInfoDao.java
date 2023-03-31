@@ -2,6 +2,7 @@ package org.epha.mall.product.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.epha.mall.product.entity.SpuInfoEntity;
 
 /**
@@ -13,5 +14,6 @@ import org.epha.mall.product.entity.SpuInfoEntity;
  */
 @Mapper
 public interface SpuInfoDao extends BaseMapper<SpuInfoEntity> {
-	
+
+    void updateSpuStatus(@Param("spuId") Long spuId, @Param("code") int code);
 }

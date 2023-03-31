@@ -8,6 +8,8 @@
 
 package org.epha.common.utils;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import org.apache.http.HttpStatus;
 
 import java.util.HashMap;
@@ -20,7 +22,24 @@ import java.util.Map;
  */
 public class R extends HashMap<String, Object> {
 	private static final long serialVersionUID = 1L;
-	
+
+	public R setDate(Object data){
+		put("data",data);
+		return this;
+	}
+
+	/**
+	 * 利用fastjson把map转为指定类型对象
+	 * @param typeReference
+	 * @param <T>
+	 * @return
+	 */
+	public <T> T getData(TypeReference<T> typeReference){
+		Object data = this.get("data");
+		String s = JSON.toJSONString(data);
+		return JSON.parseObject(s, typeReference);
+	}
+
 	public R() {
 		put("code", 0);
 		put("msg", "success");
@@ -60,5 +79,9 @@ public class R extends HashMap<String, Object> {
 	public R put(String key, Object value) {
 		super.put(key, value);
 		return this;
+	}
+
+	public Integer getCode() {
+		return (Integer) this.get("code");
 	}
 }
