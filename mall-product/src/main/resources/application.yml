@@ -13,6 +13,7 @@ spring:
     import:
       - optional:nacos:test.yml?refreshEnabled=false
       - optional:nacos:database.yml?refreshEnabled=true
+      - optional:nacos:redis.yml?refreshEnabled=true
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
