@@ -1,8 +1,8 @@
 package org.epha.mall.coupon.dao;
 
-import org.epha.mall.coupon.entity.HomeAdvEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.epha.mall.coupon.entity.HomeAdvEntity;
 
 /**
  * 首页轮播广告

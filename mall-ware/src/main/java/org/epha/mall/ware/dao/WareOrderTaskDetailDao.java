@@ -1,8 +1,8 @@
 package org.epha.mall.ware.dao;
 
-import org.epha.mall.ware.entity.WareOrderTaskDetailEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.epha.mall.ware.entity.WareOrderTaskDetailEntity;
 
 /**
  * 库存工作单

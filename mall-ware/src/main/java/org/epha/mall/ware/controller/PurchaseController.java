@@ -1,19 +1,14 @@
 package org.epha.mall.ware.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import org.epha.mall.ware.entity.PurchaseEntity;
-import org.epha.mall.ware.service.PurchaseService;
 import org.epha.common.utils.PageUtils;
 import org.epha.common.utils.R;
+import org.epha.mall.ware.entity.PurchaseEntity;
+import org.epha.mall.ware.service.PurchaseService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.Map;
 
 
 

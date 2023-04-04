@@ -8,9 +8,11 @@ import org.epha.common.utils.Query;
 import org.epha.mall.product.dao.AttrGroupDao;
 import org.epha.mall.product.entity.AttrGroupEntity;
 import org.epha.mall.product.service.AttrGroupService;
+import org.epha.mall.product.vo.SpuItemAttrGroup;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -50,6 +52,11 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
 
             return new PageUtils(page);
         }
+    }
+
+    @Override
+    public List<SpuItemAttrGroup> getAttrGroupWithAttrsBySpuId(Long spuId, Long catalogId) {
+        return getBaseMapper().getAttrGroupWithAttrsBySpuId(spuId,catalogId);
     }
 
 }

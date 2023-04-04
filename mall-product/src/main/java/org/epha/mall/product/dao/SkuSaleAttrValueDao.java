@@ -2,7 +2,11 @@ package org.epha.mall.product.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.epha.mall.product.entity.SkuSaleAttrValueEntity;
+import org.epha.mall.product.vo.SkuItemSaleAttr;
+
+import java.util.List;
 
 /**
  * sku销售属性&值
@@ -13,5 +17,6 @@ import org.epha.mall.product.entity.SkuSaleAttrValueEntity;
  */
 @Mapper
 public interface SkuSaleAttrValueDao extends BaseMapper<SkuSaleAttrValueEntity> {
-	
+
+    List<SkuItemSaleAttr> getSaleAttrsBySpuId(@Param("spuId") Long spuId);
 }

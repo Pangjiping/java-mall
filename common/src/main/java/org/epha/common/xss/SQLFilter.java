@@ -8,8 +8,8 @@
 
 package org.epha.common.xss;
 
-import org.epha.common.utils.RRException;
 import org.apache.commons.lang.StringUtils;
+import org.epha.common.utils.RRException;
 
 /**
  * SQL过滤

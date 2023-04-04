@@ -8,8 +8,10 @@ import org.epha.common.utils.Query;
 import org.epha.mall.product.dao.SkuSaleAttrValueDao;
 import org.epha.mall.product.entity.SkuSaleAttrValueEntity;
 import org.epha.mall.product.service.SkuSaleAttrValueService;
+import org.epha.mall.product.vo.SkuItemSaleAttr;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -24,6 +26,11 @@ public class SkuSaleAttrValueServiceImpl extends ServiceImpl<SkuSaleAttrValueDao
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public List<SkuItemSaleAttr> getSaleAttrsBySpuId(Long spuId) {
+        return getBaseMapper().getSaleAttrsBySpuId(spuId);
     }
 
 }

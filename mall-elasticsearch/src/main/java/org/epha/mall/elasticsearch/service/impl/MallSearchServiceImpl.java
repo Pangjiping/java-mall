@@ -30,7 +30,6 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -67,6 +66,7 @@ public class MallSearchServiceImpl implements MallSearchService {
     /**
      * 构建检索请求
      * 模糊匹配、过滤、排序、分页、高亮、聚合分析
+     * TODO: stream流构建有个bug，当不传条件时会无法构建请求
      */
     private SearchRequest buildSearchRequest(SearchParam param) {
 

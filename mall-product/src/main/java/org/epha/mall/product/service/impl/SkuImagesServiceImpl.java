@@ -10,6 +10,7 @@ import org.epha.mall.product.entity.SkuImagesEntity;
 import org.epha.mall.product.service.SkuImagesService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -24,6 +25,15 @@ public class SkuImagesServiceImpl extends ServiceImpl<SkuImagesDao, SkuImagesEnt
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public List<SkuImagesEntity> getImageBySkuId(Long skuId) {
+
+        return getBaseMapper().selectList(
+                new QueryWrapper<SkuImagesEntity>()
+                        .eq("sku_id", skuId)
+        );
     }
 
 }

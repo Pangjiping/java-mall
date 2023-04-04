@@ -1,6 +1,5 @@
 package org.epha.mall.product.controller;
 
-import org.epha.common.utils.PageUtils;
 import org.epha.common.utils.R;
 import org.epha.mall.product.entity.CategoryEntity;
 import org.epha.mall.product.service.CategoryService;

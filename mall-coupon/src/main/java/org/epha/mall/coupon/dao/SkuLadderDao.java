@@ -1,8 +1,8 @@
 package org.epha.mall.coupon.dao;
 
-import org.epha.mall.coupon.entity.SkuLadderEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.epha.mall.coupon.entity.SkuLadderEntity;
 
 /**
  * 商品阶梯价格

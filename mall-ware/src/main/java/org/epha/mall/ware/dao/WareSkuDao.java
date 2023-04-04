@@ -1,8 +1,8 @@
 package org.epha.mall.ware.dao;
 
-import org.epha.mall.ware.entity.WareSkuEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.epha.mall.ware.entity.WareSkuEntity;
 
 /**
  * 商品库存

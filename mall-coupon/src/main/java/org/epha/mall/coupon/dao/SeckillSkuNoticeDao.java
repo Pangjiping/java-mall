@@ -1,8 +1,8 @@
 package org.epha.mall.coupon.dao;
 
-import org.epha.mall.coupon.entity.SeckillSkuNoticeEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.epha.mall.coupon.entity.SeckillSkuNoticeEntity;
 
 /**
  * 秒杀商品通知订阅

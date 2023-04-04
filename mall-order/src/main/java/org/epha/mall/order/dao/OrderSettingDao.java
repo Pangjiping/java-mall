@@ -1,8 +1,8 @@
 package org.epha.mall.order.dao;
 
-import org.epha.mall.order.entity.OrderSettingEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.epha.mall.order.entity.OrderSettingEntity;
 
 /**
  * 订单配置信息

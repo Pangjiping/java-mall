@@ -34,3 +34,10 @@ logging:
   level:
     org.epha.mall: debug
 
+#线程池配置
+jmall:
+  thread:
+    core-size: 20
+    max-size: 200
+    keep-alive-time: 10
+
