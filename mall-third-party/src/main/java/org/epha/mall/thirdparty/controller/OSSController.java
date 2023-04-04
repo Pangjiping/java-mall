@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RestController
-//@RequestMapping("/thirdparty")
+@RequestMapping("/oss")
 public class OSSController {
 
     @Resource
@@ -29,7 +29,7 @@ public class OSSController {
     @Value("${alibaba.cloud.access-key}")
     private String accessId;
 
-    @RequestMapping("/oss/policy")
+    @RequestMapping("/policy")
     public Map<String, String> policy() {
         String host = "https://" + bucket + "." + endpoint;
         String format = new SimpleDateFormat("yyyy-MM-dd").format(new Date());

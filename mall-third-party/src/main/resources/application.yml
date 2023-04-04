@@ -13,8 +13,9 @@ spring:
         namespace: 6cdda117-c0b7-4bd7-b829-1bee093859bb
   config:
     import:
-      - optional:nacos:test.yml?refreshEnabled=true
+      - optional:nacos:test.yml?refreshEnabled=false
       - optional:nacos:oss.yml?refreshEnabled=true
+      - optional:nacos:sms.yml?refreshEnabled=true
 
 server:
   port: 30000

@@ -64,6 +64,13 @@ spring:
             - Path=/api/search/**
           filters:
             - RewritePath=/api/search/(?<segment>.*),/$\{segment}
+        # auth服务
+        - id: eauth_route
+          uri: lb://java-mall-auth
+          predicates:
+            - Path=/auth/**
+          filters:
+            - RewritePath=/auth/(?<segment>.*),/$\{segment}
   config:
     import:
       - optional:nacos:test.yml?refreshEnabled=false
