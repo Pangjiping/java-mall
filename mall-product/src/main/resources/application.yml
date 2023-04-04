@@ -14,6 +14,10 @@ spring:
       - optional:nacos:test.yml?refreshEnabled=false
       - optional:nacos:database.yml?refreshEnabled=true
       - optional:nacos:redis.yml?refreshEnabled=true
+  cache:
+    type: redis
+    redis:
+      time-to-live: 36000
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
@@ -29,3 +33,4 @@ server:
 logging:
   level:
     org.epha.mall: debug
+

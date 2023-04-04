@@ -57,6 +57,13 @@ spring:
             - Path=/api/thirdparty/**
           filters:
             - RewritePath=/api/thirdparty/(?<segment>.*),/$\{segment}
+        # elasticsearch服务
+        - id: elasticsearch_route
+          uri: lb://java-mall-elasticsearch
+          predicates:
+            - Path=/api/search/**
+          filters:
+            - RewritePath=/api/search/(?<segment>.*),/$\{segment}
   config:
     import:
       - optional:nacos:test.yml?refreshEnabled=false

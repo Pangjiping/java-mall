@@ -1,17 +1,15 @@
 package org.epha.mall.product.controller;
 
+import org.epha.common.utils.PageUtils;
 import org.epha.common.utils.R;
 import org.epha.mall.product.entity.CategoryEntity;
 import org.epha.mall.product.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
-
+import java.util.Map;
 
 
 /**
@@ -36,6 +34,15 @@ public class CategoryController {
         List<CategoryEntity> entities = categoryService.listWithTree();
 
         return R.ok().put("data", entities);
+    }
+
+    @RequestMapping("/list/page")
+    //@RequiresPermissions("product:category:list")
+    public R queryPage(@RequestParam Map<String, Object> params){
+        // PageUtils page = categoryService.queryPage(params);
+        List<CategoryEntity> categorys = categoryService.getLevel1Categorys();
+
+        return R.ok().put("data", categorys);
     }
 
 

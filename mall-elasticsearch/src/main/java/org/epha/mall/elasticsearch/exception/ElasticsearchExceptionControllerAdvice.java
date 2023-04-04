@@ -35,8 +35,9 @@ public class ElasticsearchExceptionControllerAdvice {
     /**
      * 处理其他通用的错误，只有具体匹配全都失败时才会用这个
      */
-    @ExceptionHandler(value = Throwable.class)
-    public R handleThrowable(Throwable throwable) {
-        return R.error(BizCodeEnum.UNKNOWN_EXCEPTION.getCode(), BizCodeEnum.UNKNOWN_EXCEPTION.getMessage());
-    }
+//    @ExceptionHandler(value = Throwable.class)
+//    public R handleThrowable(Throwable throwable) {
+//        log.error("系统未知异常: {}",throwable.getStackTrace());
+//        return R.error(BizCodeEnum.UNKNOWN_EXCEPTION.getCode(), BizCodeEnum.UNKNOWN_EXCEPTION.getMessage());
+//    }
 }
