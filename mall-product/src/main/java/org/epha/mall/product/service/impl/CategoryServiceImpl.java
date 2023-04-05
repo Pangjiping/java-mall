@@ -122,7 +122,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
             } finally {
                 // 删除锁
                 // 这种方式不能保证原子性
-//            String redisToken = stringRedisTemplate.opsForValue().get("lock");
+//            String redisToken = stringRedisTemplate.opsForValue().get("lock");.
 //            if (ownerToken.equals(redisToken)) {
 //                stringRedisTemplate.delete("lock");
 //            }

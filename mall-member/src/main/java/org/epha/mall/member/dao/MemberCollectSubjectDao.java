@@ -1,8 +1,8 @@
 package org.epha.mall.member.dao;
 
-import org.epha.mall.member.entity.MemberCollectSubjectEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.epha.mall.member.entity.MemberCollectSubjectEntity;
 
 /**
  * 会员收藏的专题活动

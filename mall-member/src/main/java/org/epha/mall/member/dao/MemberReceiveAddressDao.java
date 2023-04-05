@@ -1,8 +1,8 @@
 package org.epha.mall.member.dao;
 
-import org.epha.mall.member.entity.MemberReceiveAddressEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.epha.mall.member.entity.MemberReceiveAddressEntity;
 
 /**
  * 会员收货地址

@@ -1,8 +1,8 @@
 package org.epha.mall.member.dao;
 
-import org.epha.mall.member.entity.GrowthChangeHistoryEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.epha.mall.member.entity.GrowthChangeHistoryEntity;
 
 /**
  * 成长值变化历史记录

@@ -3,6 +3,12 @@ package org.epha.mall.member.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.epha.common.utils.PageUtils;
 import org.epha.mall.member.entity.MemberEntity;
+import org.epha.mall.member.exception.AccountNotExistException;
+import org.epha.mall.member.exception.PasswordMismatchException;
+import org.epha.mall.member.exception.PhoneExistException;
+import org.epha.mall.member.exception.UserNameExistException;
+import org.epha.mall.member.vo.MemberLoginVo;
+import org.epha.mall.member.vo.MemberRegisterVo;
 
 import java.util.Map;
 
@@ -16,5 +22,13 @@ import java.util.Map;
 public interface MemberService extends IService<MemberEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void register(MemberRegisterVo registerVo) throws PhoneExistException, UserNameExistException;
+
+    void checkUniquePhone(String email) throws PhoneExistException;
+
+    void checkUniqueUserName(String userName) throws UserNameExistException;
+
+    MemberEntity login(MemberLoginVo loginVo) throws AccountNotExistException, PasswordMismatchException;
 }
 
