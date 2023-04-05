@@ -1,10 +1,13 @@
 package org.epha.mall.auth.controller;
 
+import com.alibaba.fastjson.TypeReference;
+import lombok.extern.slf4j.Slf4j;
 import org.epha.common.constant.AuthConstant;
 import org.epha.common.exception.BizCodeEnum;
 import org.epha.common.utils.R;
 import org.epha.mall.auth.feign.MemberFeignService;
 import org.epha.mall.auth.feign.ThirdPartyFeignService;
+import org.epha.mall.auth.vo.LoginUserResp;
 import org.epha.mall.auth.vo.UserLoginVo;
 import org.epha.mall.auth.vo.UserRegisterVo;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -12,6 +15,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.UUID;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -20,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author pangjiping
  */
+@Slf4j
 @RestController
 @RequestMapping("/login")
 public class LoginController {
@@ -96,14 +101,26 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public R login(@Valid @RequestBody UserLoginVo loginVo) {
+    public R login(@Valid @RequestBody UserLoginVo loginVo, HttpSession session) {
 
         // 远程登录
         R r = memberFeignService.login(loginVo);
 
-        // 页面跳转之类的，没写
+        if (r.getCode() == 0) {
+            // 保存session
+            LoginUserResp loginUser = r.getData(new TypeReference<LoginUserResp>() {
+            });
 
-        return r;
+            session.setAttribute(AuthConstant.SESSION_KEY_LOGIN_USER, loginUser);
+
+            // 打印session信息（没写前端）
+            log.debug("session: {}", session.getAttribute(AuthConstant.SESSION_KEY_LOGIN_USER));
+        } else {
+            return r;
+        }
+
+        // 页面跳转之类的，没写
+        return R.ok();
     }
 
 }

@@ -115,7 +115,7 @@ public class MemberController {
 
         // 可能需要对memberEntity做一些处理...
 
-        return R.ok();
+        return R.ok().setDate(memberEntity);
     }
 
     @PostMapping("/oauth/weibo/login")
@@ -124,7 +124,7 @@ public class MemberController {
 
         // 可能需要对memberEntity做一些处理...
 
-        return R.ok();
+        return R.ok().setDate(memberEntity);
     }
 
 }
