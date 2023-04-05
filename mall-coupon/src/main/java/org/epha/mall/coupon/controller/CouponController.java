@@ -1,21 +1,16 @@
 package org.epha.mall.coupon.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
+import org.epha.common.utils.PageUtils;
+import org.epha.common.utils.R;
+import org.epha.mall.coupon.entity.CouponEntity;
+import org.epha.mall.coupon.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import org.epha.mall.coupon.entity.CouponEntity;
-import org.epha.mall.coupon.service.CouponService;
-import org.epha.common.utils.PageUtils;
-import org.epha.common.utils.R;
+import java.util.Arrays;
+import java.util.Map;
 
 
 

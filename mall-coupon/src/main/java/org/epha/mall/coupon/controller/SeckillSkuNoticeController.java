@@ -1,19 +1,14 @@
 package org.epha.mall.coupon.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import org.epha.mall.coupon.entity.SeckillSkuNoticeEntity;
-import org.epha.mall.coupon.service.SeckillSkuNoticeService;
 import org.epha.common.utils.PageUtils;
 import org.epha.common.utils.R;
+import org.epha.mall.coupon.entity.SeckillSkuNoticeEntity;
+import org.epha.mall.coupon.service.SeckillSkuNoticeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.Map;
 
 
 
