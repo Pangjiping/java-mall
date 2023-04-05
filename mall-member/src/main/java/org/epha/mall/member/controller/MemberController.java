@@ -11,9 +11,10 @@ import org.epha.mall.member.exception.UserNameExistException;
 import org.epha.mall.member.service.MemberService;
 import org.epha.mall.member.vo.MemberLoginVo;
 import org.epha.mall.member.vo.MemberRegisterVo;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.epha.mall.member.vo.WeiboMemberLoginVo;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("member/member")
 public class MemberController {
-    @Autowired
+    @Resource
     private MemberService memberService;
 
     /**
@@ -111,6 +112,15 @@ public class MemberController {
         } catch (PasswordMismatchException e) {
             return R.error(BizCodeEnum.PASSWORD_MISMATCH_EXCEPTION.getCode(), BizCodeEnum.PASSWORD_MISMATCH_EXCEPTION.getMessage());
         }
+
+        // 可能需要对memberEntity做一些处理...
+
+        return R.ok();
+    }
+
+    @PostMapping("/oauth/weibo/login")
+    public R OAuthWeiboLogin(@RequestBody WeiboMemberLoginVo loginVo) {
+        MemberEntity memberEntity = memberService.login(loginVo);
 
         // 可能需要对memberEntity做一些处理...
 

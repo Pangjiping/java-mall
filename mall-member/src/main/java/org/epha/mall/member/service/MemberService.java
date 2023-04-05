@@ -9,6 +9,7 @@ import org.epha.mall.member.exception.PhoneExistException;
 import org.epha.mall.member.exception.UserNameExistException;
 import org.epha.mall.member.vo.MemberLoginVo;
 import org.epha.mall.member.vo.MemberRegisterVo;
+import org.epha.mall.member.vo.WeiboMemberLoginVo;
 
 import java.util.Map;
 
@@ -30,5 +31,7 @@ public interface MemberService extends IService<MemberEntity> {
     void checkUniqueUserName(String userName) throws UserNameExistException;
 
     MemberEntity login(MemberLoginVo loginVo) throws AccountNotExistException, PasswordMismatchException;
+
+    MemberEntity login(WeiboMemberLoginVo loginVo);
 }
 

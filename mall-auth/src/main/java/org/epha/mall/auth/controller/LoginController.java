@@ -88,10 +88,10 @@ public class LoginController {
                 }
 
             } else {
-                return R.error(BizCodeEnum.SMS_CODE_MISMATCH.getCode(), BizCodeEnum.SMS_CODE_MISMATCH.getMessage());
+                return R.error(BizCodeEnum.SMS_CODE_MISMATCH_EXCEPTION.getCode(), BizCodeEnum.SMS_CODE_MISMATCH_EXCEPTION.getMessage());
             }
         } else {
-            return R.error(BizCodeEnum.SMS_CODE_MISMATCH.getCode(), BizCodeEnum.SMS_CODE_MISMATCH.getMessage());
+            return R.error(BizCodeEnum.SMS_CODE_MISMATCH_EXCEPTION.getCode(), BizCodeEnum.SMS_CODE_MISMATCH_EXCEPTION.getMessage());
         }
     }
 
