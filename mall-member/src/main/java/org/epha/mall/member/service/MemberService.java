@@ -1,12 +1,9 @@
 package org.epha.mall.member.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.epha.common.exception.BizException;
 import org.epha.common.utils.PageUtils;
 import org.epha.mall.member.entity.MemberEntity;
-import org.epha.mall.member.exception.AccountNotExistException;
-import org.epha.mall.member.exception.PasswordMismatchException;
-import org.epha.mall.member.exception.PhoneExistException;
-import org.epha.mall.member.exception.UserNameExistException;
 import org.epha.mall.member.vo.MemberLoginVo;
 import org.epha.mall.member.vo.MemberRegisterVo;
 import org.epha.mall.member.vo.WeiboMemberLoginVo;
@@ -24,13 +21,13 @@ public interface MemberService extends IService<MemberEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
-    void register(MemberRegisterVo registerVo) throws PhoneExistException, UserNameExistException;
+    void register(MemberRegisterVo registerVo) throws BizException;
 
-    void checkUniquePhone(String email) throws PhoneExistException;
+    void checkUniquePhone(String email) throws  BizException;
 
-    void checkUniqueUserName(String userName) throws UserNameExistException;
+    void checkUniqueUserName(String userName) throws  BizException;
 
-    MemberEntity login(MemberLoginVo loginVo) throws AccountNotExistException, PasswordMismatchException;
+    MemberEntity login(MemberLoginVo loginVo) throws  BizException;
 
     MemberEntity login(WeiboMemberLoginVo loginVo);
 }

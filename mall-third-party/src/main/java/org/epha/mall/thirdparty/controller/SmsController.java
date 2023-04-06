@@ -19,13 +19,9 @@ public class SmsController {
     // TODO: 远程调用的时候为什么失败？但无报错信息
     @GetMapping("/code")
     public R sendCaptcha(@RequestParam("phoneNumber") String phoneNumber,
-                         @RequestParam("code") String code) {
+                         @RequestParam("code") String code) throws Exception {
 
-        try {
-            aliyunSmsService.sendCaptcha(phoneNumber,code);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        aliyunSmsService.sendCaptcha(phoneNumber, code);
 
         return R.ok();
     }

@@ -2,6 +2,7 @@ package org.epha.mall.auth.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.epha.common.exception.BizCodeEnum;
+import org.epha.common.exception.BizException;
 import org.epha.common.utils.R;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -31,6 +32,14 @@ public class AuthExceptionControllerAdvice {
 
         return R.error(BizCodeEnum.VALID_EXCEPTION.getCode(), BizCodeEnum.VALID_EXCEPTION.getMessage())
                 .put("data", errorMap);
+    }
+
+    /**
+     * 处理自定义的异常类BizException
+     */
+    @ExceptionHandler(value = BizException.class)
+    public R handleBizException(BizException e) {
+        return R.error(e.getCode(), e.getMessage());
     }
 
     /**

@@ -2,6 +2,7 @@ package org.epha.mall.elasticsearch.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.epha.common.exception.BizCodeEnum;
+import org.epha.common.exception.BizException;
 import org.epha.common.utils.R;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 /**
  * 集中处理所有异常
+ * @author pangjiping
  */
 @Slf4j
 @RestControllerAdvice(basePackages = "org.epha.mall.elasticsearch.controller")
@@ -29,15 +31,24 @@ public class ElasticsearchExceptionControllerAdvice {
             errorMap.put(fieldError.getField(), fieldError.getDefaultMessage());
         });
 
-        return R.error(BizCodeEnum.VALID_EXCEPTION.getCode(), BizCodeEnum.VALID_EXCEPTION.getMessage()).put("data", errorMap);
+        return R.error(BizCodeEnum.VALID_EXCEPTION.getCode(), BizCodeEnum.VALID_EXCEPTION.getMessage())
+                .put("data", errorMap);
+    }
+
+    /**
+     * 处理自定义的异常类BizException
+     */
+    @ExceptionHandler(value = BizException.class)
+    public R handleBizException(BizException e) {
+        return R.error(e.getCode(), e.getMessage());
     }
 
     /**
      * 处理其他通用的错误，只有具体匹配全都失败时才会用这个
      */
-//    @ExceptionHandler(value = Throwable.class)
-//    public R handleThrowable(Throwable throwable) {
-//        log.error("系统未知异常: {}",throwable.getStackTrace());
-//        return R.error(BizCodeEnum.UNKNOWN_EXCEPTION.getCode(), BizCodeEnum.UNKNOWN_EXCEPTION.getMessage());
-//    }
+    @ExceptionHandler(value = Throwable.class)
+    public R handleThrowable(Throwable throwable) {
+        return R.error(BizCodeEnum.UNKNOWN_EXCEPTION.getCode(), BizCodeEnum.UNKNOWN_EXCEPTION.getMessage())
+                .setDate(throwable.getMessage());
+    }
 }

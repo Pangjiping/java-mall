@@ -63,10 +63,8 @@ public class LoginController {
                         10,
                         TimeUnit.MINUTES);
 
-        // 异步发送验证码
-        threadPoolExecutor.execute(() ->
-                thirdPartyFeignService.sendCaptcha(phoneNumber, code)
-        );
+        // 发送验证码
+        thirdPartyFeignService.sendCaptcha(phoneNumber, code);
 
         return R.ok();
     }

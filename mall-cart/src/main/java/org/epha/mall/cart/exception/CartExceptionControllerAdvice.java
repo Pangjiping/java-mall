@@ -1,4 +1,4 @@
-package org.epha.mall.product.exception;
+package org.epha.mall.cart.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.epha.common.exception.BizCodeEnum;
@@ -11,14 +11,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
 import java.util.Map;
-
 /**
- * 集中处理所有异常
  * @author pangjiping
  */
 @Slf4j
-@RestControllerAdvice(basePackages = "org.epha.mall.product.controller")
-public class ProductExceptionControllerAdvice {
+@RestControllerAdvice(basePackages = "org.epha.mall.cart.controller")
+public class CartExceptionControllerAdvice {
     /**
      * 处理MethodArgumentNotValidException错误，也就是校验错误
      */

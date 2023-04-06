@@ -1,13 +1,9 @@
 package org.epha.mall.member.controller;
 
-import org.epha.common.exception.BizCodeEnum;
+import org.epha.common.exception.BizException;
 import org.epha.common.utils.PageUtils;
 import org.epha.common.utils.R;
 import org.epha.mall.member.entity.MemberEntity;
-import org.epha.mall.member.exception.AccountNotExistException;
-import org.epha.mall.member.exception.PasswordMismatchException;
-import org.epha.mall.member.exception.PhoneExistException;
-import org.epha.mall.member.exception.UserNameExistException;
 import org.epha.mall.member.service.MemberService;
 import org.epha.mall.member.vo.MemberLoginVo;
 import org.epha.mall.member.vo.MemberRegisterVo;
@@ -89,29 +85,15 @@ public class MemberController {
     }
 
     @PostMapping("/register")
-    public R register(@RequestBody MemberRegisterVo registerVo) {
-
-        try {
+    public R register(@RequestBody MemberRegisterVo registerVo) throws BizException {
             memberService.register(registerVo);
-        } catch (PhoneExistException e) {
-            return R.error(BizCodeEnum.PHONE_EXIST_EXCEPTION.getCode(), BizCodeEnum.PHONE_EXIST_EXCEPTION.getMessage());
-        } catch (UserNameExistException e) {
-            return R.error(BizCodeEnum.USER_EXIST_EXCEPTION.getCode(), BizCodeEnum.USER_EXIST_EXCEPTION.getMessage());
-        }
 
         return R.ok();
     }
 
     @PostMapping("/login")
-    public R login(@RequestBody MemberLoginVo loginVo) {
-        MemberEntity memberEntity = null;
-        try {
-            memberEntity = memberService.login(loginVo);
-        } catch (AccountNotExistException e) {
-            return R.error(BizCodeEnum.ACCOUNT_NOT_EXIST_EXCEPTION.getCode(), BizCodeEnum.ACCOUNT_NOT_EXIST_EXCEPTION.getMessage());
-        } catch (PasswordMismatchException e) {
-            return R.error(BizCodeEnum.PASSWORD_MISMATCH_EXCEPTION.getCode(), BizCodeEnum.PASSWORD_MISMATCH_EXCEPTION.getMessage());
-        }
+    public R login(@RequestBody MemberLoginVo loginVo) throws BizException {
+        MemberEntity memberEntity = memberService.login(loginVo);
 
         // 可能需要对memberEntity做一些处理...
 

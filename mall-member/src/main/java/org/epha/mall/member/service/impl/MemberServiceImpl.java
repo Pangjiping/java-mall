@@ -8,15 +8,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.Data;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
+import org.epha.common.exception.BizCodeEnum;
+import org.epha.common.exception.BizException;
 import org.epha.common.utils.HttpUtils;
 import org.epha.common.utils.PageUtils;
 import org.epha.common.utils.Query;
 import org.epha.mall.member.dao.MemberDao;
 import org.epha.mall.member.entity.MemberEntity;
-import org.epha.mall.member.exception.AccountNotExistException;
-import org.epha.mall.member.exception.PasswordMismatchException;
-import org.epha.mall.member.exception.PhoneExistException;
-import org.epha.mall.member.exception.UserNameExistException;
 import org.epha.mall.member.service.MemberLevelService;
 import org.epha.mall.member.service.MemberService;
 import org.epha.mall.member.vo.MemberLoginVo;
@@ -50,7 +48,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
     }
 
     @Override
-    public void register(MemberRegisterVo registerVo) throws PhoneExistException, UserNameExistException {
+    public void register(MemberRegisterVo registerVo) throws BizException {
         MemberEntity memberEntity = new MemberEntity();
 
         // 设置默认等级
@@ -74,7 +72,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
     }
 
     @Override
-    public void checkUniquePhone(String phone) throws PhoneExistException {
+    public void checkUniquePhone(String phone) throws BizException {
 
         Integer count = getBaseMapper().selectCount(
                 new QueryWrapper<MemberEntity>().eq("mobile", phone)
@@ -82,24 +80,24 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
 
         // 如果存在了手机号，抛出异常
         if (count > 0) {
-            throw new PhoneExistException();
+            throw new BizException(BizCodeEnum.PHONE_EXIST_EXCEPTION);
         }
     }
 
     @Override
-    public void checkUniqueUserName(String userName) throws UserNameExistException {
+    public void checkUniqueUserName(String userName) throws BizException {
         Integer count = getBaseMapper().selectCount(
                 new QueryWrapper<MemberEntity>().eq("username", userName)
         );
 
         // 如果存在了用户名，抛出异常
         if (count > 0) {
-            throw new UserNameExistException();
+            throw new BizException(BizCodeEnum.USER_EXIST_EXCEPTION);
         }
     }
 
     @Override
-    public MemberEntity login(MemberLoginVo loginVo) throws AccountNotExistException, PasswordMismatchException {
+    public MemberEntity login(MemberLoginVo loginVo) throws BizException {
 
         MemberEntity memberEntity = getBaseMapper().selectOne(
                 new QueryWrapper<MemberEntity>()
@@ -109,13 +107,13 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
         );
 
         if (memberEntity == null) {
-            throw new AccountNotExistException();
+            throw new BizException(BizCodeEnum.ACCOUNT_NOT_EXIST_EXCEPTION);
         }
 
         // 得到密码，匹配用户输入的密码
         boolean matches = new BCryptPasswordEncoder().matches(loginVo.getPassword(), memberEntity.getPassword());
         if (!matches) {
-            throw new PasswordMismatchException();
+            throw new BizException(BizCodeEnum.PASSWORD_MISMATCH_EXCEPTION);
         }
 
         return memberEntity;
