@@ -3,8 +3,10 @@ package org.epha.mall.order.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.epha.common.utils.PageUtils;
 import org.epha.mall.order.entity.OrderEntity;
+import org.epha.mall.order.vo.OrderConfirmVo;
 
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  * 订单
@@ -16,5 +18,7 @@ import java.util.Map;
 public interface OrderService extends IService<OrderEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    OrderConfirmVo confirmOrder() throws ExecutionException, InterruptedException;
 }
 

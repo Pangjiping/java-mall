@@ -14,6 +14,12 @@ spring:
       - optional:nacos:test.yml?refreshEnabled=false
       - optional:nacos:database.yml?refreshEnabled=true
       - optional:nacos:rabbitmq.yml?refreshEnabled=false
+  session:
+    store-type: redis
+  redis:
+    host: localhost
+    port: 6379
+
 
 
 
@@ -26,3 +32,10 @@ mybatis-plus:
 
 server:
   port: 20003
+
+#线程池配置
+jmall:
+  thread:
+    core-size: 20
+    max-size: 200
+    keep-alive-time: 10

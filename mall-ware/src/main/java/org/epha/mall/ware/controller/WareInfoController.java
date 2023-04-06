@@ -7,6 +7,7 @@ import org.epha.mall.ware.service.WareInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -24,6 +25,17 @@ import java.util.Map;
 public class WareInfoController {
     @Autowired
     private WareInfoService wareInfoService;
+
+    /**
+     * 根据收货地址计算运费
+     * @param addrId
+     * @return
+     */
+    @GetMapping("/fare")
+    public R getFare(@RequestParam("addrId") Long addrId){
+        BigDecimal fare = wareInfoService.getFare(addrId);
+        return R.ok().setDate(fare);
+    }
 
     /**
      * 列表

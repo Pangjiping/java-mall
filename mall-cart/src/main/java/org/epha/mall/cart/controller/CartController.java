@@ -7,6 +7,7 @@ import org.epha.mall.cart.vo.CartItem;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -18,6 +19,16 @@ public class CartController {
 
     @Resource
     CartService cartService;
+
+    /**
+     * 查询购物车所有选中的购物项
+     */
+    @GetMapping("/check/items")
+    public R getCheckedItems(){
+        List<CartItem> cartItems = cartService.getCheckedItems();
+
+        return R.ok().setDate(cartItems);
+    }
 
     /**
      * 展示购物车首页，需要用户鉴权

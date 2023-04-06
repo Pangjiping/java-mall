@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -160,6 +161,39 @@ public class CartServiceImpl implements CartService {
     public void deleteCartItem(Long skuId) {
         BoundHashOperations<String, Object, Object> cartOps = getCartOps();
         cartOps.delete(skuId.toString());
+    }
+
+    @Override
+    public List<CartItem> getCheckedItems() {
+        UserInfo user = CartInterceptor.threadLocal.get();
+
+        if (user.getUserId() == null) {
+            return new ArrayList<CartItem>();
+        }
+
+        String cartKey = CartConstant.CART_CACHE_PREFIX + user.getUserId().toString();
+
+        // 过滤选中的购物项
+        List<CartItem> items = getCartItems(cartKey);
+        if (items == null || items.size() <= 0) {
+            return new ArrayList<CartItem>();
+        }
+
+        List<CartItem> cartItems = items
+                .parallelStream()
+                .filter(CartItem::getCheck)
+                .map(cartItem -> {
+                    // 更新价格为最新价格
+                    R r = productFeignService.getPrice(cartItem.getSkuId());
+                    if (r.getCode() == 0) {
+                        BigDecimal price = r.getData(new TypeReference<BigDecimal>() {
+                        });
+                        cartItem.setPrice(price);
+                    }
+                    return cartItem;
+                })
+                .collect(Collectors.toList());
+        return cartItems;
     }
 
     /**

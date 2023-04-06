@@ -10,6 +10,7 @@ import org.epha.mall.member.entity.MemberReceiveAddressEntity;
 import org.epha.mall.member.service.MemberReceiveAddressService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -24,6 +25,14 @@ public class MemberReceiveAddressServiceImpl extends ServiceImpl<MemberReceiveAd
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public List<MemberReceiveAddressEntity> getAddress(Long memberId) {
+        return getBaseMapper().selectList(
+                new QueryWrapper<MemberReceiveAddressEntity>()
+                        .eq("member_id", memberId)
+        );
     }
 
 }

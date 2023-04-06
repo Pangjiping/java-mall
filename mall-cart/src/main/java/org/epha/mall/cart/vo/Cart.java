@@ -43,9 +43,11 @@ public class Cart {
     public Integer getCountNum() {
         final Integer[] count = {0};
         if (items != null && items.size() > 0) {
-            items.forEach(cartItem ->
-                    count[0] += cartItem.getCount()
-            );
+            items.forEach(cartItem -> {
+                if (cartItem.getCheck()) {
+                    count[0] += cartItem.getCount();
+                }
+            });
         }
         return count[0];
     }
@@ -53,9 +55,11 @@ public class Cart {
     public Integer getCountType() {
         final Integer[] count = {0};
         if (items != null && items.size() > 0) {
-            items.forEach(cartItem ->
-                    count[0] += 1
-            );
+            items.forEach(cartItem -> {
+                if (cartItem.getCheck()) {
+                    count[0] += 1;
+                }
+            });
         }
         return count[0];
     }
@@ -64,9 +68,11 @@ public class Cart {
 
         final BigDecimal[] amount = {new BigDecimal("0")};
         if (items != null && items.size() > 0) {
-            items.forEach(cartItem ->
-                    amount[0] = amount[0].add(cartItem.getTotalPrice())
-            );
+            items.forEach(cartItem -> {
+                if (cartItem.getCheck()) {
+                    amount[0] = amount[0].add(cartItem.getTotalPrice());
+                }
+            });
         }
 
         // 减去减免价格

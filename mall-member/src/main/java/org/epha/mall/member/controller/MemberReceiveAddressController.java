@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -24,6 +25,14 @@ import java.util.Map;
 public class MemberReceiveAddressController {
     @Autowired
     private MemberReceiveAddressService memberReceiveAddressService;
+
+    @GetMapping("/{memberId}/address")
+    public R getAddress(@PathVariable("memberId") Long memberId){
+
+        List<MemberReceiveAddressEntity> entities = memberReceiveAddressService.getAddress(memberId);
+
+        return R.ok().setDate(entities);
+    }
 
     /**
      * 列表

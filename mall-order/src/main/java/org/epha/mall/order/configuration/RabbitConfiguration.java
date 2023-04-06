@@ -43,7 +43,7 @@ public class RabbitConfiguration {
      *  默认是自动的，只要消息被收到，消费端会自动确认，Broker就会删除这个消息
      *  问题：消费端收到很多消息，自动回复了ack，但是消息没有完全处理成功就宕机了，此时会产生消息丢失！
      *      1. 手动确认解决，消息处理完再确认，服务器宕机消息不会丢失，消息会转为ready状态
-     *      2. 如何手动ack？见org.epha.mall.order.service.RabbitMqDemoConsumer#receiveMessage(org.springframework.amqp.core.Message, org.epha.mall.order.entity.OrderReturnReasonEntity, com.rabbitmq.client.Channel)
+     *      2. 如何手动ack？见org.epha.mall.order.service.RabbitMqDemoConsumer#receiveMessage()
      */
     @PostConstruct
     public void initRabbitTemplate() {
