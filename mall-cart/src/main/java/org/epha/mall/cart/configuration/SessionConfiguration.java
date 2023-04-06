@@ -1,4 +1,4 @@
-package org.epha.mall.auth.configuration;
+package org.epha.mall.cart.configuration;
 
 import com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +25,7 @@ public class SessionConfiguration {
         cookieSerializer.setDomainName("localhost");
 
         // 设置session的名字
-        cookieSerializer.setCookieName("JMALLSESSION");
+        // cookieSerializer.setCookieName("JMALLSESSION");
 
         return cookieSerializer;
     }

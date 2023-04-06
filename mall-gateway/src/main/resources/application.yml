@@ -71,6 +71,13 @@ spring:
             - Path=/auth/**
           filters:
             - RewritePath=/auth/(?<segment>.*),/$\{segment}
+        # cart服务
+        - id: cart_route
+          uri: lb://java-mall-cart
+          predicates:
+            - Path=/cart/**
+          filters:
+            - RewritePath=/cart/(?<segment>.*),/$\{segment}
   config:
     import:
       - optional:nacos:test.yml?refreshEnabled=false

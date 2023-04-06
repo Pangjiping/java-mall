@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: java-mall-cart
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 82.157.130.123:8848
+      config:
+        server-addr: 82.157.130.123:8848
+        group: DEFAULT_GROUP
+        namespace: be4ff296-7ebd-400a-a7ac-d0491a730029
+  config:
+    import:
+      - optional:nacos:test.yml?refreshEnabled=false
+  redis:
+    host: localhost
+    port: 6379
+
+server:
+  port: 20010
+
+logging:
+  level:
+    org.epha.mall: debug
+
+#线程池配置
+jmall:
+  thread:
+    core-size: 20
+    max-size: 200
+    keep-alive-time: 10
+
+
