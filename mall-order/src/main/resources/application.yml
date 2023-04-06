@@ -13,6 +13,8 @@ spring:
     import:
       - optional:nacos:test.yml?refreshEnabled=false
       - optional:nacos:database.yml?refreshEnabled=true
+      - optional:nacos:rabbitmq.yml?refreshEnabled=false
+
 
 
 mybatis-plus:
@@ -20,6 +22,7 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto
+
 
 server:
   port: 20003
