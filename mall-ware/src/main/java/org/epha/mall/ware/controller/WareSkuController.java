@@ -1,13 +1,15 @@
 package org.epha.mall.ware.controller;
 
+import org.epha.common.exception.BizException;
 import org.epha.common.utils.PageUtils;
 import org.epha.common.utils.R;
 import org.epha.mall.ware.entity.WareSkuEntity;
 import org.epha.mall.ware.service.WareSkuService;
 import org.epha.mall.ware.vo.SkuHasStockVo;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.epha.mall.ware.vo.WareSkuLockRequest;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -24,8 +26,16 @@ import java.util.Map;
 @RestController
 @RequestMapping("ware/waresku")
 public class WareSkuController {
-    @Autowired
+    @Resource
     private WareSkuService wareSkuService;
+
+    @PostMapping("/lock/order")
+    public R orderLockStock(@RequestBody WareSkuLockRequest request) throws BizException {
+
+        wareSkuService.orderLockStock(request);
+
+        return R.ok();
+    }
 
     /**
      * 批量查询sku是否有库存

@@ -2,7 +2,10 @@ package org.epha.mall.ware.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.epha.mall.ware.entity.WareSkuEntity;
+
+import java.util.List;
 
 /**
  * 商品库存
@@ -15,4 +18,8 @@ import org.epha.mall.ware.entity.WareSkuEntity;
 public interface WareSkuDao extends BaseMapper<WareSkuEntity> {
 
     Long getSkuStock(Long skuId);
+
+    List<Long> listWareIdsHasStock(@Param("skuId") Long skuId);
+
+    Long lockSkuStock(@Param("skuId") Long skuId, @Param("wareId") Long wareId, @Param("num") Integer num);
 }

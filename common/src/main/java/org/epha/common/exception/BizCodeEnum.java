@@ -12,6 +12,7 @@ package org.epha.common.exception;
  * 13：购物车
  * 14：物流
  * 15: 用户
+ * 16: 库存
  */
 public enum BizCodeEnum {
     UNKNOWN_EXCEPTION(10000, "系统未知异常"),
@@ -25,7 +26,12 @@ public enum BizCodeEnum {
     USER_EXIST_EXCEPTION(15001, "用户名已经存在"),
     PHONE_EXIST_EXCEPTION(15002, "手机号已经存在"),
     ACCOUNT_NOT_EXIST_EXCEPTION(15003, "账户不存在，请先注册"),
-    PASSWORD_MISMATCH_EXCEPTION(15004, "账户或密码错误");
+    PASSWORD_MISMATCH_EXCEPTION(15004, "账户或密码错误"),
+
+    REPEATE_ORDER_SUNMIT_EXCEPTION(12001, "请勿重复提交订单"),
+    PRICE_MISMATCH_EXCEPTION(12002, "订单金额出现变动，请重新下单"),
+
+    EMPTY_STOCK_EXCEPTION(16001,"库存不足");
 
     private int code;
     private String message;

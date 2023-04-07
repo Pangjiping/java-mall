@@ -1,6 +1,7 @@
 package org.epha.mall.order.feign;
 
 import org.epha.common.utils.R;
+import org.epha.mall.order.vo.WareSkuLockRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,4 +20,7 @@ public interface WareFeignService {
 
     @GetMapping("/ware/wareinfo/fare")
     R getFare(@RequestParam("addrId") Long addrId);
+
+    @PostMapping("/ware/waresku/lock/order")
+    R orderLockStock(@RequestBody WareSkuLockRequest request);
 }
