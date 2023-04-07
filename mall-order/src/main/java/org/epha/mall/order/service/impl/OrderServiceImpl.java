@@ -202,7 +202,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     /**
      * 提交订单：验令牌、创建订单、验价格、锁库存...
      */
-    @Transactional
     @Override
     public OrderSubmitResponse submitOrder(OrderSubmitRequest request) throws BizException, ExecutionException, InterruptedException {
 

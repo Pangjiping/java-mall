@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutionException;
  * @author pangjiping
  */
 @RestController
-public class OrderController {
+public class OrderWebController {
 
     @Resource
     OrderService orderService;
@@ -38,6 +38,7 @@ public class OrderController {
      * 提交订单
      * TODO: 待测试，把拦截器cookie去掉测试
      */
+    // @GlobalTransactional
     @PostMapping("/submit")
     public R submit(@RequestBody OrderSubmitRequest request) throws BizException, ExecutionException, InterruptedException {
 

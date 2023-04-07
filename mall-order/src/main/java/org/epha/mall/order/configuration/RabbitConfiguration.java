@@ -1,12 +1,14 @@
 package org.epha.mall.order.configuration;
 
 import org.springframework.amqp.core.ReturnedMessage;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -17,8 +19,18 @@ import javax.annotation.Resource;
 @Configuration
 public class RabbitConfiguration {
 
-    @Resource
-    RabbitTemplate rabbitTemplate;
+    private RabbitTemplate rabbitTemplate;
+
+    @Primary
+    @Bean
+    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        this.rabbitTemplate = rabbitTemplate;
+
+        rabbitTemplate.setMessageConverter(messageConverter());
+        initRabbitTemplate();
+        return rabbitTemplate;
+    }
 
     /**
      * 自定义消息序列化为Json格式，否则是默认的java序列化
@@ -30,22 +42,22 @@ public class RabbitConfiguration {
 
     /**
      * 定制rabbitTemplate
-     *
+     * <p>
      * 消息抵达Broker消息回调：
-     *      1. spring.rabbitmq.publisher-confirm-type=correlated
-     *      2. 设置确认回调
-     *
+     * 1. spring.rabbitmq.publisher-confirm-type=correlated
+     * 2. 设置确认回调
+     * <p>
      * 消息正确抵达Queue进行回调：
-     *      1. spring.rabbitmq.publisher-returns=true spring.rabbitmq.template.mandatory=true
-     *      2. 设置消息抵达队列的确认回调
-     *
-     *  消费端确认，保证每个消息正确被消费，此时Broker才能删除这个消息
-     *  默认是自动的，只要消息被收到，消费端会自动确认，Broker就会删除这个消息
-     *  问题：消费端收到很多消息，自动回复了ack，但是消息没有完全处理成功就宕机了，此时会产生消息丢失！
-     *      1. 手动确认解决，消息处理完再确认，服务器宕机消息不会丢失，消息会转为ready状态
-     *      2. 如何手动ack？见org.epha.mall.order.service.RabbitMqDemoConsumer#receiveMessage()
+     * 1. spring.rabbitmq.publisher-returns=true spring.rabbitmq.template.mandatory=true
+     * 2. 设置消息抵达队列的确认回调
+     * <p>
+     * 消费端确认，保证每个消息正确被消费，此时Broker才能删除这个消息
+     * 默认是自动的，只要消息被收到，消费端会自动确认，Broker就会删除这个消息
+     * 问题：消费端收到很多消息，自动回复了ack，但是消息没有完全处理成功就宕机了，此时会产生消息丢失！
+     * 1. 手动确认解决，消息处理完再确认，服务器宕机消息不会丢失，消息会转为ready状态
+     * 2. 如何手动ack？见org.epha.mall.order.service.RabbitMqDemoConsumer#receiveMessage()
      */
-    @PostConstruct
+    // @PostConstruct
     public void initRabbitTemplate() {
 
         // 设置消息抵达Broker回调

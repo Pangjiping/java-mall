@@ -29,6 +29,12 @@ mybatis-plus:
     db-config:
       id-type: auto
 
+seata:
+  tx-service-group: mygroup
+  service:
+    vgroup-mapping:
+      mygroup: default
+
 
 server:
   port: 20003
