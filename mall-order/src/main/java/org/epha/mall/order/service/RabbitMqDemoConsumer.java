@@ -1,15 +1,5 @@
 package org.epha.mall.order.service;
 
-import com.rabbitmq.client.Channel;
-import org.epha.mall.order.entity.OrderReturnReasonEntity;
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessageProperties;
-import org.springframework.amqp.rabbit.annotation.RabbitHandler;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.stereotype.Service;
-
-import java.io.IOException;
-
 /**
  * @author pangjiping
  */

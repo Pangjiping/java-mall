@@ -24,5 +24,7 @@ public interface WareSkuService extends IService<WareSkuEntity> {
     List<SkuHasStockVo> getSkusHasStock(List<Long> skuIds);
 
     void orderLockStock(WareSkuLockRequest request) throws BizException;
+
+    void unlockStock(Long skuId, Long wareId, Integer num);
 }
 

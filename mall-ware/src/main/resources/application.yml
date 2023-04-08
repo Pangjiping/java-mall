@@ -13,6 +13,7 @@ spring:
     import:
       - optional:nacos:test.yml?refreshEnabled=false
       - optional:nacos:database.yml?refreshEnabled=true
+      - optional:nacos:rabbitmq.yml?refreshEnabled=true
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
@@ -22,3 +23,7 @@ mybatis-plus:
 
 server:
   port: 20005
+logging:
+  level:
+    org.epha.mall.ware: debug
+

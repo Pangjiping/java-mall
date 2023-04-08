@@ -21,17 +21,19 @@ public enum BizCodeEnum {
     SMS_CODE_MISMATCH_EXCEPTION(10003, "验证码错误"),
     RELOGIN_EXCEPTION(10004, "请重新登录"),
 
-    PRODUCT_UP_EXCEPTION(11000, "商品上架异常"),
+    PRODUCT_UP_EXCEPTION(11001, "商品上架异常"),
 
     USER_EXIST_EXCEPTION(15001, "用户名已经存在"),
     PHONE_EXIST_EXCEPTION(15002, "手机号已经存在"),
     ACCOUNT_NOT_EXIST_EXCEPTION(15003, "账户不存在，请先注册"),
     PASSWORD_MISMATCH_EXCEPTION(15004, "账户或密码错误"),
 
+    ORDER_RPC_EXCEPTION(12000, "远程调用订单系统失败"),
     REPEATE_ORDER_SUNMIT_EXCEPTION(12001, "请勿重复提交订单"),
     PRICE_MISMATCH_EXCEPTION(12002, "订单金额出现变动，请重新下单"),
 
-    EMPTY_STOCK_EXCEPTION(16001,"库存不足");
+    WARE_RPC_EXCEPTION(16000, "远程调用库存系统失败"),
+    EMPTY_STOCK_EXCEPTION(16001, "库存不足");
 
     private int code;
     private String message;

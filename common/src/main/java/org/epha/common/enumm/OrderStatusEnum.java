@@ -1,9 +1,9 @@
-package org.epha.mall.order.enumm;
+package org.epha.common.enumm;
 
 /**
  * @author pangjiping
  */
-@Deprecated
+
 public enum OrderStatusEnum {
     CREATE_NEW(0,"待付款"),
     PAYED(1,"已付款"),

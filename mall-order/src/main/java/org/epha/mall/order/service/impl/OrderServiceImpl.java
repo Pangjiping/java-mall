@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.epha.common.constant.OrderConstant;
+import org.epha.common.enumm.OrderStatusEnum;
 import org.epha.common.exception.BizCodeEnum;
 import org.epha.common.exception.BizException;
 import org.epha.common.utils.PageUtils;
@@ -14,7 +16,6 @@ import org.epha.common.utils.R;
 import org.epha.mall.order.dao.OrderDao;
 import org.epha.mall.order.entity.OrderEntity;
 import org.epha.mall.order.entity.OrderItemEntity;
-import org.epha.mall.order.enumm.OrderStatusEnum;
 import org.epha.mall.order.feign.CartFeignService;
 import org.epha.mall.order.feign.MemberFeignService;
 import org.epha.mall.order.feign.ProductFeignService;
@@ -24,6 +25,7 @@ import org.epha.mall.order.service.OrderItemService;
 import org.epha.mall.order.service.OrderService;
 import org.epha.mall.order.to.CreatedOrder;
 import org.epha.mall.order.vo.*;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
@@ -45,6 +47,7 @@ import java.util.stream.Collectors;
 /**
  * @author pangjiping
  */
+@Slf4j
 @Service("orderService")
 public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> implements OrderService {
 
@@ -74,6 +77,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
     @Resource
     OrderItemService orderItemService;
+
+    @Resource
+    RabbitTemplate rabbitTemplate;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -202,6 +208,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     /**
      * 提交订单：验令牌、创建订单、验价格、锁库存...
      */
+    @Transactional
     @Override
     public OrderSubmitResponse submitOrder(OrderSubmitRequest request) throws BizException, ExecutionException, InterruptedException {
 
@@ -242,14 +249,72 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         if (r.getCode() != 0) {
             // TODO 锁定失败怎么办？
             // 直接抛异常，让本机事务 saveOrder(order); 回滚
+            log.error("远程调用库存失败：{}", r.getErrorMessage());
             throw new BizException(BizCodeEnum.EMPTY_STOCK_EXCEPTION);
         }
+
+        // 订单创建成功，发送消息给MQ
+        sendOrderCreateMessage(order.getOrder());
 
         response.setOrderEntity(order.getOrder());
 
         orderSubmitRequest.remove();
 
         return response;
+    }
+
+    private void sendOrderCreateMessage(OrderEntity order) {
+        rabbitTemplate.convertAndSend(
+                OrderConstant.MQ_EXCHANGE_ORDER_EVENT,
+                OrderConstant.MQ_ROUTING_KEY_ORDER_CREATE,
+                order
+        );
+    }
+
+    @Override
+    public Integer getOrderStatusByOrderSn(String orderSn) {
+        OrderEntity order = this.getOne(
+                new QueryWrapper<OrderEntity>()
+                        .eq("order_sn", orderSn)
+        );
+        if (order == null) {
+            return OrderStatusEnum.CANCLED.getCode();
+        }
+        return order.getStatus();
+    }
+
+    @Override
+    public void closeOrder(OrderEntity orderEntity) {
+        // 查询订单的最新状态
+        OrderEntity order = this.getById(orderEntity.getId());
+
+        // 什么情况下需要关单
+        if (order != null && order.getStatus().equals(OrderStatusEnum.CREATE_NEW.getCode())) {
+            // 关闭订单
+            OrderEntity update = new OrderEntity();
+            update.setStatus(OrderStatusEnum.CANCLED.getCode());
+            update.setId(orderEntity.getId());
+
+            this.updateById(update);
+
+            // 只要订单解锁成功，再给MQ发个消息
+            // TODO 保证消息百分百发出去
+            sendOrderCloseMessage(order);
+        }
+    }
+
+    private void sendOrderCloseMessage(OrderEntity order) {
+        try{
+            rabbitTemplate.convertAndSend(
+                    OrderConstant.MQ_EXCHANGE_ORDER_EVENT,
+                    "order.release.other",
+                    order
+            );
+        }catch (Exception e){
+            // 如果消息发送失败，给数据库记录一个详细信息
+            // 定期扫描数据库，把没法出去的消息再发一遍
+        }
+
     }
 
     /**

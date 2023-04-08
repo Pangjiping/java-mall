@@ -1,6 +1,7 @@
 package org.epha.mall.order;
 
 import lombok.extern.slf4j.Slf4j;
+import org.epha.mall.order.entity.OrderEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
@@ -10,6 +11,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 @SpringBootTest
 @Slf4j
@@ -80,10 +82,16 @@ public class RabbitMqTests {
      */
     @Test
     public void sendMessage() {
+
+        OrderEntity orderEntity = new OrderEntity();
+        orderEntity.setId(1L);
+        orderEntity.setOrderSn("fafasfasfasfas");
+        orderEntity.setCreateTime(new Date());
+
         rabbitTemplate.convertAndSend(
                 "hello-java-exchange",
                 "hello.java",
-                "hello world"
+                orderEntity
         );
 
         log.debug("消息发送完成");
