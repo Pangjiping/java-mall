@@ -32,14 +32,15 @@ public class RabbitConfiguration {
         };
     }
 
-    /**
-     * 自定义消息序列化为Json格式，否则是默认的java序列化
-     */
 //    @Bean
 //    public MessageConverter messageConverter() {
 //        return new Jackson2JsonMessageConverter();
 //    }
 
+    /**
+     * 定义全局统一的两个回调函数
+     * 自定义消息序列化为Json格式，否则是默认的java序列化
+     */
     @Bean
     // @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE, proxyMode = ScopedProxyMode.TARGET_CLASS)
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {

@@ -5,13 +5,15 @@ import org.epha.mall.order.entity.OrderEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.UUID;
 
 @SpringBootTest
 @Slf4j
@@ -30,13 +32,13 @@ public class RabbitMqTests {
     public void createExchange() {
 
         // 创建一个DirectExchange
-        DirectExchange directExchange = new DirectExchange(
+        TopicExchange topicExchange = new TopicExchange(
                 "hello-java-exchange",
                 true,
                 false);
-        amqpAdmin.declareExchange(directExchange);
+        amqpAdmin.declareExchange(topicExchange);
 
-        log.debug("交换机创建完成: {}", directExchange);
+        log.debug("交换机创建完成: {}", topicExchange);
 
     }
 
@@ -88,15 +90,17 @@ public class RabbitMqTests {
         orderEntity.setOrderSn("fafasfasfasfas");
         orderEntity.setCreateTime(new Date());
 
+        CorrelationData correlationData = new CorrelationData(UUID.randomUUID().toString().replace("-",""));
+
         rabbitTemplate.convertAndSend(
-                "hello-java-exchange",
+                "hello-java-exchang",
                 "hello.java",
-                orderEntity
+                orderEntity,
+                correlationData
         );
 
         log.debug("消息发送完成");
     }
-
 
 
 }

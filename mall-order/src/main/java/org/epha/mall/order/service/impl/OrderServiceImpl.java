@@ -1,5 +1,6 @@
 package org.epha.mall.order.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -21,10 +22,14 @@ import org.epha.mall.order.feign.MemberFeignService;
 import org.epha.mall.order.feign.ProductFeignService;
 import org.epha.mall.order.feign.WareFeignService;
 import org.epha.mall.order.interceptor.LoginUserInterceptor;
+import org.epha.mall.order.service.MqMessageService;
 import org.epha.mall.order.service.OrderItemService;
 import org.epha.mall.order.service.OrderService;
 import org.epha.mall.order.to.CreatedOrder;
 import org.epha.mall.order.vo.*;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -36,6 +41,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -56,6 +62,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             "else return 0 end";
 
     private final ThreadLocal<OrderSubmitRequest> orderSubmitRequest = new ThreadLocal<>();
+
+    private static final String ORDER_CREATE_PREFIX = "cre_o:";
+    private static final String ORDER_RELEASE_PREFIX = "rel_o:";
 
     @Resource
     MemberFeignService memberFeignService;
@@ -80,6 +89,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
     @Resource
     RabbitTemplate rabbitTemplate;
+
+    @Resource
+    MqMessageService mqMessageService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -263,12 +275,34 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         return response;
     }
 
+    /**
+     * 发送订单创建消息
+     */
     private void sendOrderCreateMessage(OrderEntity order) {
-        rabbitTemplate.convertAndSend(
-                OrderConstant.MQ_EXCHANGE_ORDER_EVENT,
-                OrderConstant.MQ_ROUTING_KEY_ORDER_CREATE,
-                order
-        );
+
+        String uuid = UUID.randomUUID().toString().replace("-", "");
+        MessageProperties properties = new MessageProperties();
+        properties.setMessageId(uuid);
+        properties.setContentType("text/plain");
+        properties.setContentEncoding("utf-8");
+
+        String content = JSON.toJSONString(order);
+        Message message = new Message(content.getBytes(StandardCharsets.UTF_8), properties);
+        CorrelationData correlationData = new CorrelationData(uuid);
+
+        try {
+            // 发送消息
+            rabbitTemplate.convertAndSend(
+                    OrderConstant.MQ_EXCHANGE_ORDER_EVENT,
+                    OrderConstant.MQ_ROUTING_KEY_ORDER_CREATE,
+                    message,
+                    correlationData
+            );
+        } catch (Exception e) {
+            log.error("消息{} 发送失败: {}", uuid, e.getMessage());
+        } finally {
+            mqMessageService.createOrderCreateMessageRecord(uuid, content);
+        }
     }
 
     @Override
@@ -304,15 +338,28 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     }
 
     private void sendOrderCloseMessage(OrderEntity order) {
-        try{
+
+        String uuid = UUID.randomUUID().toString().replace("-", "");
+        MessageProperties properties = new MessageProperties();
+        properties.setMessageId(uuid);
+        properties.setContentType("text/plain");
+        properties.setContentEncoding("utf-8");
+
+        String content = JSON.toJSONString(order);
+        Message message = new Message(content.getBytes(StandardCharsets.UTF_8), properties);
+        CorrelationData correlationData = new CorrelationData(uuid);
+
+        try {
             rabbitTemplate.convertAndSend(
                     OrderConstant.MQ_EXCHANGE_ORDER_EVENT,
                     "order.release.other",
-                    order
+                    message,
+                    correlationData
             );
-        }catch (Exception e){
-            // 如果消息发送失败，给数据库记录一个详细信息
-            // 定期扫描数据库，把没法出去的消息再发一遍
+        } catch (Exception e) {
+            log.error("消息{} 发送失败: {}", uuid, e.getMessage());
+        } finally {
+            mqMessageService.createOrderCloseMessageRecord(uuid, content);
         }
 
     }

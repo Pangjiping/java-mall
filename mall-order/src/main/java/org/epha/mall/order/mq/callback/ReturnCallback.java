@@ -1,9 +1,13 @@
 package org.epha.mall.order.mq.callback;
 
 import lombok.extern.slf4j.Slf4j;
+import org.epha.common.enumm.MessageStatusEnum;
+import org.epha.mall.order.service.MqMessageService;
 import org.springframework.amqp.core.ReturnedMessage;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * @author pangjiping
@@ -11,12 +15,20 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class ReturnCallback implements RabbitTemplate.ReturnsCallback {
+
+    @Resource
+    MqMessageService mqMessageService;
+
     @Override
     public void returnedMessage(ReturnedMessage returned) {
-        log.info("消息主体: {}", returned.getMessage());
-        log.info("回复编码: {}", returned.getReplyCode());
-        log.info("回复内容: {}", returned.getReplyText());
-        log.info("交换器: {}", returned.getExchange());
-        log.info("路由键: {}", returned.getRoutingKey());
+
+        log.error("消息未能抵达队列");
+        log.error("replyCode: {}", returned.getReplyCode());
+        log.error("replyText: {}", returned.getReplyText());
+        String messageId = returned.getMessage().getMessageProperties().getMessageId();
+        String errMessage = returned.getReplyCode() + "::" + returned.getReplyText();
+
+        // 更新数据库状态为错误抵达
+        mqMessageService.updateMessageRecord(messageId, MessageStatusEnum.ERROR_QUEUE.getCode(), errMessage);
     }
 }
