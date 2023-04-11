@@ -41,12 +41,14 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -335,6 +337,48 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             // TODO 保证消息百分百发出去
             sendOrderCloseMessage(order);
         }
+    }
+
+    @Override
+    public PayVo getOrderPay(String orderSn) {
+        PayVo payVo = new PayVo();
+        OrderEntity order = this.getOne(
+                new QueryWrapper<OrderEntity>()
+                        .eq("order_sn", orderSn)
+        );
+
+        payVo.setTotal_amount(order.getPayAmount().setScale(2, RoundingMode.UP).toString());
+        payVo.setOut_trade_no(orderSn);
+        payVo.setSubject("收银");
+        return payVo;
+    }
+
+    @Override
+    public PageUtils listWithItem(Map<String, Object> params) {
+
+        LoginUser user = LoginUserInterceptor.threadLocal.get();
+
+        IPage<OrderEntity> page = this.page(
+                new Query<OrderEntity>().getPage(params),
+                new QueryWrapper<OrderEntity>()
+                        .eq("member_id", user.getId())
+                        .orderByDesc("id")
+        );
+
+        List<OrderEntity> orderEntities = page.getRecords().stream()
+                .map(orderEntity -> {
+                    List<OrderItemEntity> itemEntities = orderItemService.list(
+                            new QueryWrapper<OrderItemEntity>()
+                                    .eq("order_sn", orderEntity.getOrderSn())
+                    );
+                    orderEntity.setOrderItems(itemEntities);
+                    return orderEntity;
+                })
+                .collect(Collectors.toList());
+
+        page.setRecords(orderEntities);
+
+        return new PageUtils(page);
     }
 
     private void sendOrderCloseMessage(OrderEntity order) {

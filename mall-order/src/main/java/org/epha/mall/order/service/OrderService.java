@@ -7,6 +7,7 @@ import org.epha.mall.order.entity.OrderEntity;
 import org.epha.mall.order.vo.OrderConfirmVo;
 import org.epha.mall.order.vo.OrderSubmitRequest;
 import org.epha.mall.order.vo.OrderSubmitResponse;
+import org.epha.mall.order.vo.PayVo;
 
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -29,5 +30,9 @@ public interface OrderService extends IService<OrderEntity> {
     Integer getOrderStatusByOrderSn(String orderSn);
 
     void closeOrder(OrderEntity orderEntity);
+
+    PayVo getOrderPay(String orderSn);
+
+    PageUtils listWithItem(Map<String, Object> params);
 }
 

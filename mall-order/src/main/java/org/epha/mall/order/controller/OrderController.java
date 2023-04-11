@@ -34,6 +34,13 @@ public class OrderController {
         return R.ok().setDate(deleteStatus);
     }
 
+    @PostMapping("/listwithItem")
+    public R listWithItems(@RequestBody Map<String,Object> params){
+        PageUtils page = orderService.listWithItem(params);
+
+        return R.ok().put("page",page);
+    }
+
     /**
      * 列表
      */
