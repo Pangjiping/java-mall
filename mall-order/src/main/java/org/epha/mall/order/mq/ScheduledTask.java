@@ -9,6 +9,9 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -23,6 +26,8 @@ import java.util.regex.Pattern;
  */
 @Component
 @Slf4j
+@EnableScheduling
+@EnableAsync
 public class ScheduledTask {
 
     private final static String NO_EXCHANGE_PATTERN = "reply-code=404\\S*\\s*reply-text=NOT_FOUND\\s*-\\s*no\\s*exchange";
@@ -35,6 +40,7 @@ public class ScheduledTask {
     @Resource
     RabbitTemplate rabbitTemplate;
 
+    @Async
     @Scheduled(fixedRate = 60000)
     public void resendMessage() {
         List<MqMessageEntity> failedMessages = scanFailedMessage();
@@ -63,19 +69,19 @@ public class ScheduledTask {
 
             Message message = new Message(
                     mqMessageEntity.getContent().getBytes(StandardCharsets.UTF_8),
-                    properties
-            );
+                    properties);
+
             try {
                 rabbitTemplate.convertAndSend(
                         mqMessageEntity.getToExchane(),
                         mqMessageEntity.getRoutingKey(),
                         message,
-                        correlationData
-                );
+                        correlationData);
 
             } catch (Exception e) {
                 log.error("消息{} 发送失败: {}", mqMessageEntity.getMessageId(),
                         e.getMessage());
+
             } finally {
                 messageService.updateMessageRecord(
                         mqMessageEntity.getMessageId(),

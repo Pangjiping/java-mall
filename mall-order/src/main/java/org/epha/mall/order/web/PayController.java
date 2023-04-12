@@ -1,11 +1,9 @@
 package org.epha.mall.order.web;
 
 import com.alipay.api.AlipayApiException;
-import org.epha.common.utils.R;
 import org.epha.mall.order.configuration.AlipayTemplate;
 import org.epha.mall.order.service.OrderService;
 import org.epha.mall.order.vo.PayVo;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;

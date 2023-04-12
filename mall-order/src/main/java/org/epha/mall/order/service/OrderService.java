@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.epha.common.exception.BizException;
 import org.epha.common.utils.PageUtils;
 import org.epha.mall.order.entity.OrderEntity;
+import org.epha.mall.order.to.SeckillOrder;
 import org.epha.mall.order.vo.OrderConfirmVo;
 import org.epha.mall.order.vo.OrderSubmitRequest;
 import org.epha.mall.order.vo.OrderSubmitResponse;
@@ -34,5 +35,7 @@ public interface OrderService extends IService<OrderEntity> {
     PayVo getOrderPay(String orderSn);
 
     PageUtils listWithItem(Map<String, Object> params);
+
+    void createSeckillOrder(SeckillOrder seckillOrder);
 }
 

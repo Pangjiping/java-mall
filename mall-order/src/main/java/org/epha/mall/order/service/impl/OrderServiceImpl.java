@@ -26,6 +26,7 @@ import org.epha.mall.order.service.MqMessageService;
 import org.epha.mall.order.service.OrderItemService;
 import org.epha.mall.order.service.OrderService;
 import org.epha.mall.order.to.CreatedOrder;
+import org.epha.mall.order.to.SeckillOrder;
 import org.epha.mall.order.vo.*;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
@@ -48,7 +49,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -379,6 +379,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         page.setRecords(orderEntities);
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public void createSeckillOrder(SeckillOrder seckillOrder) {
+        // TODO 保存订单信息
     }
 
     private void sendOrderCloseMessage(OrderEntity order) {

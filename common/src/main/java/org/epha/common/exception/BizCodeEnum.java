@@ -13,6 +13,7 @@ package org.epha.common.exception;
  * 14：物流
  * 15: 用户
  * 16: 库存
+ * 17: 秒杀
  */
 public enum BizCodeEnum {
     UNKNOWN_EXCEPTION(10000, "系统未知异常"),
@@ -31,9 +32,18 @@ public enum BizCodeEnum {
     ORDER_RPC_EXCEPTION(12000, "远程调用订单系统失败"),
     REPEATE_ORDER_SUNMIT_EXCEPTION(12001, "请勿重复提交订单"),
     PRICE_MISMATCH_EXCEPTION(12002, "订单金额出现变动，请重新下单"),
+    UNHANDLE_ORDER_CLOSE_MESSAGE(12003, "订单关闭消息无法处理"),
 
     WARE_RPC_EXCEPTION(16000, "远程调用库存系统失败"),
-    EMPTY_STOCK_EXCEPTION(16001, "库存不足");
+    EMPTY_STOCK_EXCEPTION(16001, "库存不足"),
+
+    INVALID_SKUKILL_ID(17001, "非法的秒杀id"),
+    SECKILL_UNSTART(17004, "秒杀活动尚未开始"),
+    SECKILL_TIMEOUT(17003, "秒杀活动已经结束"),
+    INVALID_COUNT(17005, "超出购买限制"),
+    INVALID_USER(17006,"请勿重复购买"),
+    FAIL_SECKILL(17007,"商品库存不足，秒杀失败"),
+    INVALID_RANDOM_CODE(17002, "非法的随机验证码");
 
     private int code;
     private String message;

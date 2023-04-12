@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -24,6 +25,12 @@ import java.util.Map;
 public class SeckillSessionController {
     @Autowired
     private SeckillSessionService seckillSessionService;
+
+    @GetMapping("/threedays/session")
+    public R listThreeDaysSession(){
+        List<SeckillSessionEntity> sessionEntities = seckillSessionService.listThreeDaysSession();
+        return R.ok().setDate(sessionEntities);
+    }
 
     /**
      * 列表

@@ -9,6 +9,7 @@ import org.epha.mall.coupon.dao.SeckillSkuRelationDao;
 import org.epha.mall.coupon.entity.SeckillSkuRelationEntity;
 import org.epha.mall.coupon.service.SeckillSkuRelationService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Map;
 
@@ -18,9 +19,16 @@ public class SeckillSkuRelationServiceImpl extends ServiceImpl<SeckillSkuRelatio
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+
+        String id = (String) params.get("promotionSessionId");
+        QueryWrapper<SeckillSkuRelationEntity> queryWrapper = new QueryWrapper<>();
+        if (StringUtils.hasText(id)) {
+            queryWrapper.eq("promotion_session_id", id);
+        }
+
         IPage<SeckillSkuRelationEntity> page = this.page(
                 new Query<SeckillSkuRelationEntity>().getPage(params),
-                new QueryWrapper<SeckillSkuRelationEntity>()
+                queryWrapper
         );
 
         return new PageUtils(page);

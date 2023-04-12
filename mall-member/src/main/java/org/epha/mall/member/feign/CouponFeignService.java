@@ -11,5 +11,5 @@ import java.util.Map;
 public interface CouponFeignService {
     @RequestMapping("/coupon/coupon/list")
     //@RequiresPermissions("coupon:coupon:list")
-    public R list(@RequestParam Map<String, Object> params);
+    R list(@RequestParam Map<String, Object> params);
 }

@@ -37,4 +37,14 @@ public class RabbitQueueConfiguration {
                 false
         );
     }
+
+    @Bean
+    public Queue orderSeckillQueue() {
+        return new Queue(
+                "order.seckill.order.queue",
+                true,
+                false,
+                false
+        );
+    }
 }

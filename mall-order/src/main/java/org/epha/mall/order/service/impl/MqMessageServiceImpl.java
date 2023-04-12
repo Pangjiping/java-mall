@@ -45,6 +45,7 @@ public class MqMessageServiceImpl extends ServiceImpl<MqMessageDao, MqMessageEnt
         MqMessageEntity update = new MqMessageEntity();
         update.setMessageId(uuid);
         update.setMessageStatus(status);
+        update.setUpdateTime(new Date());
         this.updateById(update);
     }
 

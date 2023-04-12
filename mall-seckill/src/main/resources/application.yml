@@ -1,0 +1,63 @@
+spring:
+  application:
+    name: java-mall-seckill
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 82.157.130.123:8848
+      config:
+        server-addr: 82.157.130.123:8848
+        group: DEFAULT_GROUP
+        namespace: c0f5caa0-730b-41f7-b3b3-d738801cdb1a
+  config:
+    import:
+      - optional:nacos:test.yml?refreshEnabled=false
+  cache:
+    type: redis
+    redis:
+      time-to-live: 36000
+  redis:
+    host: localhost
+    port: 3369
+  session:
+    store-type: redis
+  rabbitmq:
+    host: localhost
+    port: 5672
+    virtual-host: /
+    username: guest
+    password: guest
+    # 消息抵达Broker自动回调
+    publisher-confirm-type: correlated
+    # 消息未正确抵达Queue触发回调
+    publisher-returns: true
+    # 以异步方式快速触发returnsConfirm回调
+    template:
+      mandatory: true
+    # 设置消费端手动ACK
+    listener:
+      simple:
+        acknowledge-mode: manual
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+server:
+  port: 20010
+
+logging:
+  level:
+    org.epha.mall: debug
+
+#线程池配置
+jmall:
+  thread:
+    core-size: 20
+    max-size: 200
+    keep-alive-time: 10
+

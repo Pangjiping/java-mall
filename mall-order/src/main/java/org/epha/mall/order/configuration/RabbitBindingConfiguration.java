@@ -36,7 +36,6 @@ public class RabbitBindingConfiguration {
 
     /**
      * 订单释放，直接和库存释放进行绑定
-     * @return
      */
     @Bean
     public Binding orderReleaseOtherBinding() {
@@ -45,6 +44,17 @@ public class RabbitBindingConfiguration {
                 Binding.DestinationType.QUEUE,
                 OrderConstant.MQ_EXCHANGE_ORDER_EVENT,
                 OrderConstant.MQ_ROUTING_KEY_ORDER_RELEASE_OTHER,
+                null
+        );
+    }
+
+    @Bean
+    public Binding orderSeckillBinding() {
+        return new Binding(
+                "order.seckill.order.queue",
+                Binding.DestinationType.QUEUE,
+                OrderConstant.MQ_EXCHANGE_ORDER_EVENT,
+                "order.seckill.order",
                 null
         );
     }
