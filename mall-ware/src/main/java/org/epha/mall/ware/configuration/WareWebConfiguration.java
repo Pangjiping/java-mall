@@ -1,6 +1,6 @@
-package org.epha.mall.order.configuration;
+package org.epha.mall.ware.configuration;
 
-import org.epha.mall.order.interceptor.LoginUserInterceptor;
+import org.epha.mall.ware.interceptor.LoginUserInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author pangjiping
  */
 @Configuration
-public class OrderWebConfiguration implements WebMvcConfigurer {
+public class WareWebConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

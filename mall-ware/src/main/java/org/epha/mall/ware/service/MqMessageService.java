@@ -16,5 +16,13 @@ import java.util.Map;
 public interface MqMessageService extends IService<MqMessageEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void createStockLockedMessageRecord(String uuid, String content);
+
+    void updateMessageRecord(String messageId, Integer code, String cause);
+
+    void updateMessageRecord(String messageId, Integer code);
+
+    void updateMessageRecord(String uuid, Integer status, Integer retry);
 }
 

@@ -53,9 +53,12 @@ public class StockReleaseListener {
      * 库存自动解锁
      */
     @RabbitHandler
-    public void handleStockLockedRelease(StockLockedMessage stockLockedMessage,
-                                         Message message,
+    public void handleStockLockedRelease(Message message,
                                          Channel channel) throws IOException {
+
+        String content = new String(message.getBody());
+        StockLockedMessage stockLockedMessage = JSON.parseObject(content, new TypeReference<>() {
+        });
 
         try {
             handle(stockLockedMessage);

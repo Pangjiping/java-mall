@@ -55,6 +55,7 @@ public class MqMessageServiceImpl extends ServiceImpl<MqMessageDao, MqMessageEnt
         update.setMessageId(uuid);
         update.setMessageStatus(status);
         update.setErrorMessage(errMessage);
+        update.setUpdateTime(new Date());
         this.updateById(update);
     }
 
@@ -64,6 +65,7 @@ public class MqMessageServiceImpl extends ServiceImpl<MqMessageDao, MqMessageEnt
         update.setMessageId(uuid);
         update.setMessageStatus(status);
         update.setRetry(retry);
+        update.setUpdateTime(new Date());
         this.updateById(update);
     }
 

@@ -1,7 +1,7 @@
-package org.epha.mall.order.interceptor;
+package org.epha.mall.ware.interceptor;
 
 import org.epha.common.constant.AuthConstant;
-import org.epha.mall.order.vo.LoginUser;
+import org.epha.mall.ware.vo.LoginUser;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;

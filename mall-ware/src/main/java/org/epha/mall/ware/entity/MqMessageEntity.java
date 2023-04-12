@@ -12,7 +12,7 @@ import java.util.Date;
  * 
  * @author epha
  * @email 13626376642@163.com
- * @date 2023-04-09 11:35:13
+ * @date 2023-04-09 11:39:27
  */
 @Data
 @TableName("mq_message")
@@ -39,7 +39,7 @@ public class MqMessageEntity implements Serializable {
 	/**
 	 * 
 	 */
-	private String classType;
+	private String errorMessage;
 	/**
 	 * 0-新建 1-已发送 2-错误抵达 3-已抵达
 	 */
@@ -52,5 +52,7 @@ public class MqMessageEntity implements Serializable {
 	 * 
 	 */
 	private Date updateTime;
+
+	private Integer retry;
 
 }

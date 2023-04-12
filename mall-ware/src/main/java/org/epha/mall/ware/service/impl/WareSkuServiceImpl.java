@@ -1,9 +1,11 @@
 package org.epha.mall.ware.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.epha.common.constant.WareConstant;
 import org.epha.common.exception.BizCodeEnum;
 import org.epha.common.exception.BizException;
@@ -14,20 +16,26 @@ import org.epha.mall.ware.dao.WareSkuDao;
 import org.epha.mall.ware.entity.WareOrderTaskDetailEntity;
 import org.epha.mall.ware.entity.WareOrderTaskEntity;
 import org.epha.mall.ware.entity.WareSkuEntity;
+import org.epha.mall.ware.service.MqMessageService;
 import org.epha.mall.ware.service.WareOrderTaskDetailService;
 import org.epha.mall.ware.service.WareOrderTaskService;
 import org.epha.mall.ware.service.WareSkuService;
 import org.epha.mall.ware.vo.OrderItemVo;
 import org.epha.mall.ware.vo.SkuHasStockVo;
 import org.epha.mall.ware.vo.WareSkuLockRequest;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -35,6 +43,7 @@ import java.util.stream.Collectors;
  * @author pangjiping
  */
 @Service("wareSkuService")
+@Slf4j
 public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> implements WareSkuService {
 
     @Resource
@@ -45,6 +54,9 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
 
     @Resource
     WareOrderTaskDetailService wareOrderTaskDetailService;
+
+    @Resource
+    MqMessageService mqMessageService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -165,14 +177,34 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
         StockLockedMessage.WareOrderTaskDetail detail = new StockLockedMessage.WareOrderTaskDetail();
         BeanUtils.copyProperties(taskDetail, detail);
 
-        StockLockedMessage message = new StockLockedMessage();
-        message.setWareOrderTaskId(taskId);
-        message.setTaskDetail(detail);
+        StockLockedMessage stockLockedMessage = new StockLockedMessage();
+        stockLockedMessage.setWareOrderTaskId(taskId);
+        stockLockedMessage.setTaskDetail(detail);
 
-        rabbitTemplate.convertAndSend(WareConstant.MQ_EXCHANGE_STOCK_EVENT,
-                WareConstant.MQ_ROUTING_KEY_STOCK_LOCKED,
-                message
-        );
+        // 设置唯一id
+        String uuid = UUID.randomUUID().toString().replace("-", "");
+        MessageProperties properties = new MessageProperties();
+        properties.setMessageId(uuid);
+        properties.setContentType("text/plain");
+        properties.setContentEncoding("utf-8");
+
+        String content = JSON.toJSONString(stockLockedMessage);
+        Message message = new Message(content.getBytes(StandardCharsets.UTF_8), properties);
+        CorrelationData correlationData = new CorrelationData(uuid);
+
+        try{
+            rabbitTemplate.convertAndSend(
+                    WareConstant.MQ_EXCHANGE_STOCK_EVENT,
+                    WareConstant.MQ_ROUTING_KEY_STOCK_LOCKED,
+                    message,
+                    correlationData
+            );
+        }catch (Exception e){
+            log.error("消息{} 发送失败: {}", uuid, e.getMessage());
+        }finally {
+            mqMessageService.createStockLockedMessageRecord(uuid, content);
+        }
+
     }
 
     @Data
