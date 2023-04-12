@@ -12,12 +12,14 @@ spring:
   config:
     import:
       - optional:nacos:test.yml?refreshEnabled=false
+
+#redis配置
   redis:
     host: localhost
     port: 6379
 
 server:
-  port: 20010
+  port: 30002
 
 logging:
   level:

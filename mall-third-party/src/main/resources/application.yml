@@ -18,4 +18,4 @@ spring:
       - optional:nacos:sms.yml?refreshEnabled=true
 
 server:
-  port: 30000
+  port: 30010

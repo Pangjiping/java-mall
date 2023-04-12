@@ -12,8 +12,28 @@ spring:
   config:
     import:
       - optional:nacos:test.yml?refreshEnabled=false
-      - optional:nacos:database.yml?refreshEnabled=true
-      - optional:nacos:rabbitmq.yml?refreshEnabled=true
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/jmall_wms
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  rabbitmq:
+    host: localhost
+    port: 5672
+    virtual-host: /
+    username: guest
+    password: guest
+    # 消息抵达Broker自动回调
+    publisher-confirm-type: correlated
+    # 消息未正确抵达Queue触发回调
+    publisher-returns: true
+    # 以异步方式快速触发returnsConfirm回调
+    template:
+      mandatory: true
+    # 设置消费端手动ACK
+    listener:
+      simple:
+        acknowledge-mode: manual
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
@@ -22,7 +42,7 @@ mybatis-plus:
       id-type: auto
 
 server:
-  port: 20005
+  port: 30011
 logging:
   level:
     org.epha.mall.ware: debug

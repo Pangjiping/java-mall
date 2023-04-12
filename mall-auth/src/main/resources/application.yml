@@ -1,6 +1,8 @@
 spring:
   application:
     name: mall-auth
+
+# nacos配置
   cloud:
     nacos:
       discovery:
@@ -12,13 +14,19 @@ spring:
   config:
     import:
       - optional:nacos:test.yml?refreshEnabled=false
-      - optional:nacos:redis.yml?refreshEnabled=true
+
+# spring session redis配置
   session:
     store-type: redis
 
+# redis配置
+  redis:
+    host: localhost
+    port: 6379
+
 
 server:
-  port: 30002
+  port: 30001
   servlet:
     session:
       timeout: 30m
@@ -29,6 +37,7 @@ jmall:
     core-size: 20
     max-size: 200
     keep-alive-time: 10
+
 logging:
   level:
     org.epha.mall.auth.controller: debug

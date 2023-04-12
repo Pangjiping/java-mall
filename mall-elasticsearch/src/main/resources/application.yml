@@ -14,7 +14,7 @@ spring:
       - optional:nacos:test.yml?refreshEnabled=false
 
 server:
-  port: 30001
+  port: 30004
 logging:
   level:
     org.epha.mall: debug

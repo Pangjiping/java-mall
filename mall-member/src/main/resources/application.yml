@@ -12,7 +12,12 @@ spring:
   config:
     import:
       - optional:nacos:test.yml?refreshEnabled=false
-      - optional:nacos:database.yml?refreshEnabled=true
+
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/jmall_ums
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
 # Mybatis-Plus配置
 mybatis-plus:
@@ -20,6 +25,7 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto
+
 # 服务端口
 server:
-  port: 20002
+  port: 30005

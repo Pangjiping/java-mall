@@ -12,12 +12,18 @@ spring:
   config:
     import:
       - optional:nacos:test.yml?refreshEnabled=false
-      - optional:nacos:database.yml?refreshEnabled=true
-      - optional:nacos:redis.yml?refreshEnabled=true
   cache:
     type: redis
     redis:
       time-to-live: 36000
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/jmall_pms
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: localhost
+    port: 6379
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
@@ -28,7 +34,7 @@ mybatis-plus:
       logic-not-delete-value: 0
 
 server:
-  port: 20004
+    port: 30007
 
 logging:
   level:

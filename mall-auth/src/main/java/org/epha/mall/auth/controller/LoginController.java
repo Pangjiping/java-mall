@@ -106,7 +106,7 @@ public class LoginController {
 
         if (r.getCode() == 0) {
             // 保存session
-            LoginUserResp loginUser = r.getData(new TypeReference<LoginUserResp>() {
+            LoginUserResp loginUser = r.getData(new TypeReference<>() {
             });
 
             session.setAttribute(AuthConstant.SESSION_KEY_LOGIN_USER, loginUser);

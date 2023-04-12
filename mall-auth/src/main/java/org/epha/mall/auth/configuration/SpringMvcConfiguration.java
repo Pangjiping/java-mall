@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class SpringMvcConfiguration implements WebMvcConfigurer {
 
     /**
-     * 试图映射，不需要写跳转逻辑相关的controller了
+     * 视图映射，不需要写跳转逻辑相关的controller了
      */
 //    @Override
 //    public void addViewControllers(ViewControllerRegistry registry) {

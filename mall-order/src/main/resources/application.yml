@@ -12,13 +12,33 @@ spring:
   config:
     import:
       - optional:nacos:test.yml?refreshEnabled=false
-      - optional:nacos:database.yml?refreshEnabled=true
-      - optional:nacos:rabbitmq.yml?refreshEnabled=false
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/jmall_oms
+    driver-class-name: com.mysql.cj.jdbc.Driver
   session:
     store-type: redis
   redis:
     host: localhost
     port: 6379
+  rabbitmq:
+    host: localhost
+    port: 5672
+    virtual-host: /
+    username: guest
+    password: guest
+    # 消息抵达Broker自动回调
+    publisher-confirm-type: correlated
+    # 消息未正确抵达Queue触发回调
+    publisher-returns: true
+    # 以异步方式快速触发returnsConfirm回调
+    template:
+      mandatory: true
+    # 设置消费端手动ACK
+    listener:
+      simple:
+        acknowledge-mode: manual
 
 
 
@@ -37,7 +57,7 @@ seata:
 
 
 server:
-  port: 20003
+  port: 30006
 
 #线程池配置
 jmall:
