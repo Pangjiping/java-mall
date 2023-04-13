@@ -44,7 +44,7 @@ public class LoginController {
     @GetMapping("/sms/code")
     public R sendCode(@RequestParam("phoneNumber") String phoneNumber) {
 
-        // TODO: 接口防刷，检查上次发送验证码的时间
+        // 接口防刷，检查上次发送验证码的时间
         String redisCode = stringRedisTemplate.opsForValue().get(AuthConstant.SMS_CODE_CACHE_PREFIX + phoneNumber);
         if (StringUtils.hasText(redisCode)) {
             long cachedTimestamp = Long.parseLong(redisCode.split(AuthConstant.SMS_CODE_TIMESTAMP_DELIMITER)[1]);

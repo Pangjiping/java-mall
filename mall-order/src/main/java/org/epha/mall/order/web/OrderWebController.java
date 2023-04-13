@@ -36,7 +36,6 @@ public class OrderWebController {
 
     /**
      * 提交订单
-     * TODO: 待测试，把拦截器cookie去掉测试
      */
     // @GlobalTransactional
     @PostMapping("/submit")

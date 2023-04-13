@@ -190,7 +190,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         // 查询用户积分
         confirmVo.setIntegration(user.getIntegration());
 
-        // TODO 防重复令牌 返回值放一份，redis放一份
+        // 防重复令牌 返回值放一份，redis放一份
         String token = UUID.randomUUID().toString().replace("-", "");
         confirmVo.setOrderToken(token);
         stringRedisTemplate.opsForValue().set(
@@ -261,7 +261,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
         R r = wareFeignService.orderLockStock(lockRequest);
         if (r.getCode() != 0) {
-            // TODO 锁定失败怎么办？
             // 直接抛异常，让本机事务 saveOrder(order); 回滚
             log.error("远程调用库存失败：{}", r.getErrorMessage());
             throw new BizException(BizCodeEnum.EMPTY_STOCK_EXCEPTION);
@@ -334,7 +333,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             this.updateById(update);
 
             // 只要订单解锁成功，再给MQ发个消息
-            // TODO 保证消息百分百发出去
+            // 保证消息百分百发出去
             sendOrderCloseMessage(order);
         }
     }
