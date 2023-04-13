@@ -11,6 +11,10 @@ spring:
         server-addr: 82.157.130.123:8848
         group: DEFAULT_GROUP
         namespace: 6cdda117-c0b7-4bd7-b829-1bee093859bb
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+        port: 8719
   config:
     import:
       - optional:nacos:test.yml?refreshEnabled=false
@@ -19,3 +23,9 @@ spring:
 
 server:
   port: 30010
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: *

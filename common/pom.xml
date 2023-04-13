@@ -113,6 +113,12 @@
             <artifactId>httpcore</artifactId>
             <version>4.2.1</version>
         </dependency>
+
+        <!--sentinel依赖-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

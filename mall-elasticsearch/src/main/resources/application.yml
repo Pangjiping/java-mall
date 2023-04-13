@@ -9,6 +9,10 @@ spring:
         server-addr: 82.157.130.123:8848
         group: DEFAULT_GROUP
         namespace: 9a5a99a5-b7b1-45dc-8ba5-d9b3518cadd5
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+        port: 8719
   config:
     import:
       - optional:nacos:test.yml?refreshEnabled=false
@@ -27,3 +31,9 @@ elasticsearch:
   auth:
     username: elastic
     password: V+H8B-qkCg1cv2QRL=1F
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: *

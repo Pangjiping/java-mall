@@ -9,6 +9,10 @@ spring:
         server-addr: 82.157.130.123:8848
         group: DEFAULT_GROUP
         namespace: c0f5caa0-730b-41f7-b3b3-d738801cdb1a
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+        port: 8719
   config:
     import:
       - optional:nacos:test.yml?refreshEnabled=false
@@ -47,6 +51,7 @@ mybatis-plus:
       logic-delete-value: 1
       logic-not-delete-value: 0
 
+
 server:
   port: 30009
 
@@ -61,3 +66,14 @@ jmall:
     max-size: 200
     keep-alive-time: 10
 
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: *
+
+# 开启sentinel对feign调用的熔断保护
+feign:
+  sentinel:
+    enabled: true

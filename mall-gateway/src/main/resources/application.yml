@@ -82,10 +82,11 @@ spring:
     import:
       - optional:nacos:test.yml?refreshEnabled=false
 
-#logging:
-#  level:
-#    org.springframework.cloud.gateway: DEBUG
-#    reactor.netty.http.client: DEBUG
+logging:
+  level:
+    org.springframework.cloud.gateway: debug
+    reactor.netty.http.client: debug
+
 server:
   port: 8888
 

@@ -11,6 +11,10 @@ spring:
         server-addr: 82.157.130.123:8848
         group: DEFAULT_GROUP
         namespace: cf3a5ad5-d0d7-4cd0-bd17-c3dab5fba0da
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+        port: 8719
   config:
     import:
       - optional:nacos:test.yml?refreshEnabled=false
@@ -41,4 +45,10 @@ jmall:
 logging:
   level:
     org.epha.mall.auth.controller: debug
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: *
 

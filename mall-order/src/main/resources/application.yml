@@ -9,6 +9,10 @@ spring:
         server-addr: 82.157.130.123:8848
         group: DEFAULT_GROUP
         namespace: 29ec7dca-205e-4933-bee3-884038de2fef
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+        port: 8719
   config:
     import:
       - optional:nacos:test.yml?refreshEnabled=false
@@ -80,3 +84,9 @@ alipay:
   sign_type: RSA2
   charset: utf-8
   gatewayUrl: https://openapi.alipaydev.com/gateway.do
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: *
